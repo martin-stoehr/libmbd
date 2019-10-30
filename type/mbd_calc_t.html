@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p>13.3% of total for derived types.</p>Including implementation: 181 statements, 32.4% of total for derived types.">26 statements</a>
+    title="<p>13.7% of total for derived types.</p>Including implementation: 187 statements, 33.2% of total for derived types.">27 statements</a>
      </li> 
      
      
@@ -209,6 +209,8 @@
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_lattice_derivs">get_lattice_derivs</a>
       
+      <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_lattice_stress">get_lattice_stress</a>
+      
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_spectrum_modes">get_spectrum_modes</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_rpa_orders">get_rpa_orders</a>
@@ -282,6 +284,8 @@
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_gradients">get_gradients</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_lattice_derivs">get_lattice_derivs</a>
+      
+      <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_lattice_stress">get_lattice_stress</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_spectrum_modes">get_spectrum_modes</a>
       
@@ -1169,6 +1173,91 @@ private subroutine mbd_calc_get_lattice_derivs(this, latt_derivs)
   <td></td><td>::</td>
   <td><strong>latt_derivs</strong>(:,:)</td><td><p>(<script type="math/tex">3\times 3</script>, a.u.) Energy gradients, <script type="math/tex">\mathrm dE/\mathrm d\mathbf
  a_i</script>, index <script type="math/tex">i</script> runs over columns.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+        
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+     
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-get_lattice_stress"></span><h3>procedure, public :: <strong>get_lattice_stress</strong>  => mbd_calc_get_lattice_stress 
+    
+  </h3></div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+        
+          
+    
+    <h3>
+private subroutine mbd_calc_get_lattice_stress(this, stress)
+    
+    
+   
+</h3>
+    
+
+
+
+<p>Provide stress tensor of the lattice.</p>
+<p>This is a utility function wrapping <a href="../type/mbd_calc_t.html#boundprocedure-get_lattice_derivs">get_lattice_derivs</a>.
+ The lattice vector gradients are coverted to the stress tensor.</p>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/mbd_calc_t.html'>mbd_calc_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=dp),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>stress</strong>(:,:)</td><td><p>(<script type="math/tex">3\times 3</script>, a.u.) Stress tensor.</p></td>
   
 </tr>
 

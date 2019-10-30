@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 5.0% of total for source files.">118 statements</a>
+    title=" 4.9% of total for source files.">118 statements</a>
      </li> 
      
      
@@ -388,10 +388,10 @@
 <a name="ln-123"></a>                <span class="n">dQ</span> <span class="o">=</span> <span class="n">alpha_full</span><span class="p">%</span><span class="n">mmul</span><span class="p">(</span><span class="n">dQ</span><span class="p">)</span>
 <a name="ln-124"></a>                <span class="n">dQ</span> <span class="o">=</span> <span class="n">dQ</span><span class="p">%</span><span class="n">mmul</span><span class="p">(</span><span class="n">alpha_full</span><span class="p">)</span>
 <a name="ln-125"></a>                <span class="n">dalphadA</span> <span class="o">=</span> <span class="n">dQ</span><span class="p">%</span><span class="n">contract_n33diag_cols</span><span class="p">()</span>
-<a name="ln-126"></a>                <span class="k">forall</span> <span class="p">(</span><span class="n">my_i_atom</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">geom</span><span class="p">%</span><span class="n">idx</span><span class="p">%</span><span class="n">i_atom</span><span class="p">))</span>
+<a name="ln-126"></a>                <span class="k">do </span><span class="n">concurrent</span> <span class="p">(</span><span class="n">my_i_atom</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">size</span><span class="p">(</span><span class="n">geom</span><span class="p">%</span><span class="n">idx</span><span class="p">%</span><span class="n">i_atom</span><span class="p">))</span>
 <a name="ln-127"></a>                    <span class="n">dalpha_scs</span><span class="p">(</span><span class="n">my_i_atom</span><span class="p">)%</span><span class="n">dlattice</span><span class="p">(</span><span class="n">i_latt</span><span class="p">,</span> <span class="n">i_xyz</span><span class="p">)</span> <span class="p">&amp;</span>
 <a name="ln-128"></a>                        <span class="o">=</span> <span class="n">dalphadA</span><span class="p">(</span><span class="n">geom</span><span class="p">%</span><span class="n">idx</span><span class="p">%</span><span class="n">i_atom</span><span class="p">(</span><span class="n">my_i_atom</span><span class="p">))</span>
-<a name="ln-129"></a>                <span class="k">end forall</span>
+<a name="ln-129"></a>                <span class="k">end do</span>
 <a name="ln-130"></a><span class="k">            end do</span>
 <a name="ln-131"></a><span class="k">        end do</span>
 <a name="ln-132"></a><span class="k">    end if</span>

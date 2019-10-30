@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="10.8% of total for source files.">257 statements</a>
+    title="10.7% of total for source files.">257 statements</a>
      </li> 
      
      
@@ -622,10 +622,10 @@
 <a name="ln-357"></a>    <span class="n">k_pts</span> <span class="o">=</span> <span class="nb">matmul</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">pi</span><span class="o">*</span><span class="nb">transpose</span><span class="p">(</span><span class="n">latt_inv</span><span class="p">),</span> <span class="n">k_pts</span><span class="p">)</span>
 <a name="ln-358"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">)</span> <span class="k">then</span>
 <a name="ln-359"></a><span class="k">        allocate</span> <span class="p">(</span><span class="n">dkdlattice</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="n">n_kpts</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
-<a name="ln-360"></a>        <span class="k">forall</span> <span class="p">(</span><span class="n">i_kpt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n_kpts</span><span class="p">,</span> <span class="n">i_latt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
+<a name="ln-360"></a>        <span class="k">do </span><span class="n">concurrent</span> <span class="p">(</span><span class="n">i_kpt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="n">n_kpts</span><span class="p">,</span> <span class="n">i_latt</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">,</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">1</span><span class="p">:</span><span class="mi">3</span><span class="p">)</span>
 <a name="ln-361"></a>            <span class="n">dkdlattice</span><span class="p">(:,</span> <span class="n">i_kpt</span><span class="p">,</span> <span class="n">i_latt</span><span class="p">,</span> <span class="n">a</span><span class="p">)</span> <span class="o">=</span> <span class="p">&amp;</span>
 <a name="ln-362"></a>                <span class="o">-</span><span class="n">latt_inv</span><span class="p">(</span><span class="n">i_latt</span><span class="p">,</span> <span class="p">:)</span><span class="o">*</span><span class="n">k_pts</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">i_kpt</span><span class="p">)</span>
-<a name="ln-363"></a>        <span class="k">end forall</span>
+<a name="ln-363"></a>        <span class="k">end do</span>
 <a name="ln-364"></a><span class="k">    end if</span>
 <a name="ln-365"></a><span class="k">end subroutine</span>
 <a name="ln-366"></a>
