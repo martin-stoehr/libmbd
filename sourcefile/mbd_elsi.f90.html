@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 4.2% of total for source files.">100 statements</a>
+    title=" 4.1% of total for source files.">100 statements</a>
      </li> 
      
      
@@ -330,7 +330,7 @@
 <a name="ln-65"></a>    <span class="k">end if</span>
 <a name="ln-66"></a><span class="k">    call </span><span class="n">elsi_init</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="n">n_vecs</span><span class="p">)</span>
 <a name="ln-67"></a>    <span class="k">call </span><span class="n">elsi_set_mpi</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">comm</span><span class="p">)</span>
-<a name="ln-68"></a>    <span class="k">call </span><span class="n">elsi_set_blacs</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">ctx</span><span class="p">,</span> <span class="mi">3</span><span class="p">)</span>
+<a name="ln-68"></a>    <span class="k">call </span><span class="n">elsi_set_blacs</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">ctx</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">blocksize</span><span class="p">)</span>
 <a name="ln-69"></a>    <span class="k">call </span><span class="n">elsi_set_unit_ovlp</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
 <a name="ln-70"></a>    <span class="k">allocate</span> <span class="p">(</span><span class="n">vecs</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
 <a name="ln-71"></a><span class="cp">#if DO_COMPLEX_TYPE == 0</span>

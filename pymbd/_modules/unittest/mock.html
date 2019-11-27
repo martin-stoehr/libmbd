@@ -52,6 +52,7 @@
     <span class="s1">&#39;NonCallableMagicMock&#39;</span><span class="p">,</span>
     <span class="s1">&#39;mock_open&#39;</span><span class="p">,</span>
     <span class="s1">&#39;PropertyMock&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;seal&#39;</span><span class="p">,</span>
 <span class="p">)</span>
 
 
@@ -62,8 +63,8 @@
 <span class="kn">import</span> <span class="nn">pprint</span>
 <span class="kn">import</span> <span class="nn">sys</span>
 <span class="kn">import</span> <span class="nn">builtins</span>
-<span class="kn">from</span> <span class="nn">types</span> <span class="k">import</span> <span class="n">ModuleType</span>
-<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span>
+<span class="kn">from</span> <span class="nn">types</span> <span class="kn">import</span> <span class="n">ModuleType</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span><span class="p">,</span> <span class="n">partial</span>
 
 
 <span class="n">_builtins</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span> <span class="k">for</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">builtins</span><span class="p">)</span> <span class="k">if</span> <span class="ow">not</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;_&#39;</span><span class="p">)}</span>
@@ -138,26 +139,16 @@
 
 
 <span class="k">def</span> <span class="nf">_copy_func_details</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">funcopy</span><span class="p">):</span>
-    <span class="n">funcopy</span><span class="o">.</span><span class="vm">__name__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__name__</span>
-    <span class="n">funcopy</span><span class="o">.</span><span class="vm">__doc__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__doc__</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">funcopy</span><span class="o">.</span><span class="n">__text_signature__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="n">__text_signature__</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="k">pass</span>
     <span class="c1"># we explicitly don&#39;t copy func.__dict__ into this copy as it would</span>
     <span class="c1"># expose original attributes that should be mocked</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">funcopy</span><span class="o">.</span><span class="vm">__module__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__module__</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">funcopy</span><span class="o">.</span><span class="vm">__defaults__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__defaults__</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="k">pass</span>
-    <span class="k">try</span><span class="p">:</span>
-        <span class="n">funcopy</span><span class="o">.</span><span class="vm">__kwdefaults__</span> <span class="o">=</span> <span class="n">func</span><span class="o">.</span><span class="vm">__kwdefaults__</span>
-    <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
-        <span class="k">pass</span>
+    <span class="k">for</span> <span class="n">attribute</span> <span class="ow">in</span> <span class="p">(</span>
+        <span class="s1">&#39;__name__&#39;</span><span class="p">,</span> <span class="s1">&#39;__doc__&#39;</span><span class="p">,</span> <span class="s1">&#39;__text_signature__&#39;</span><span class="p">,</span>
+        <span class="s1">&#39;__module__&#39;</span><span class="p">,</span> <span class="s1">&#39;__defaults__&#39;</span><span class="p">,</span> <span class="s1">&#39;__kwdefaults__&#39;</span><span class="p">,</span>
+    <span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="nb">setattr</span><span class="p">(</span><span class="n">funcopy</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">attribute</span><span class="p">))</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">pass</span>
 
 
 <span class="k">def</span> <span class="nf">_callable</span><span class="p">(</span><span class="n">obj</span><span class="p">):</span>
@@ -276,23 +267,29 @@
 
 <span class="k">class</span> <span class="nc">_SentinelObject</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="s2">&quot;A unique, named, sentinel object.&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;sentinel.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;sentinel.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span>
 
 
 <span class="k">class</span> <span class="nc">_Sentinel</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;Access attributes to return a named object, usable as a sentinel.&quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_sentinels</span> <span class="o">=</span> <span class="p">{}</span>
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="o">==</span> <span class="s1">&#39;__bases__&#39;</span><span class="p">:</span>
             <span class="c1"># Without this help(unittest.mock) raises an exception</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_sentinels</span><span class="o">.</span><span class="n">setdefault</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">_SentinelObject</span><span class="p">(</span><span class="n">name</span><span class="p">))</span>
+
+    <span class="k">def</span> <span class="nf">__reduce__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">return</span> <span class="s1">&#39;sentinel&#39;</span>
 
 
 <span class="n">sentinel</span> <span class="o">=</span> <span class="n">_Sentinel</span><span class="p">()</span>
@@ -336,7 +333,7 @@
 
 <span class="k">class</span> <span class="nc">_CallList</span><span class="p">(</span><span class="nb">list</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">value</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
             <span class="k">return</span> <span class="nb">list</span><span class="o">.</span><span class="fm">__contains__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
         <span class="n">len_value</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">value</span><span class="p">)</span>
@@ -350,7 +347,7 @@
                 <span class="k">return</span> <span class="kc">True</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">pprint</span><span class="o">.</span><span class="n">pformat</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="p">))</span>
 
 
@@ -380,17 +377,17 @@
 
 <span class="c1"># Internal class to identify if we wrapped an iterator object or not.</span>
 <span class="k">class</span> <span class="nc">_MockIter</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">obj</span> <span class="o">=</span> <span class="nb">iter</span><span class="p">(</span><span class="n">obj</span><span class="p">)</span>
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span>
-    <span class="k">def</span> <span class="nf">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__next__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">next</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">obj</span><span class="p">)</span>
 
 <span class="k">class</span> <span class="nc">Base</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="n">_mock_return_value</span> <span class="o">=</span> <span class="n">DEFAULT</span>
     <span class="n">_mock_side_effect</span> <span class="o">=</span> <span class="kc">None</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">pass</span>
 
 
@@ -398,7 +395,7 @@
 <span class="k">class</span> <span class="nc">NonCallableMock</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
     <span class="sd">&quot;&quot;&quot;A non-callable version of `Mock`&quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="c1"># every instance has its own class</span>
         <span class="c1"># so we can create magic methods on the</span>
         <span class="c1"># class without stomping on other mocks</span>
@@ -407,7 +404,7 @@
         <span class="k">return</span> <span class="n">instance</span>
 
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">wraps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spec_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_spec_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_new_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">_new_parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
             <span class="n">_spec_as_instance</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">_eat_self</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">unsafe</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span>
@@ -420,6 +417,7 @@
         <span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_mock_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">name</span>
         <span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_mock_new_name&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_new_name</span>
         <span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_mock_new_parent&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">_new_parent</span>
+        <span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_mock_sealed&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">False</span>
 
         <span class="k">if</span> <span class="n">spec_set</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="n">spec</span> <span class="o">=</span> <span class="n">spec_set</span>
@@ -608,7 +606,7 @@
             <span class="nb">setattr</span><span class="p">(</span><span class="n">obj</span><span class="p">,</span> <span class="n">final</span><span class="p">,</span> <span class="n">val</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="p">{</span><span class="s1">&#39;_mock_methods&#39;</span><span class="p">,</span> <span class="s1">&#39;_mock_unsafe&#39;</span><span class="p">}:</span>
             <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">name</span><span class="p">)</span>
         <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_methods</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
@@ -646,7 +644,7 @@
         <span class="k">return</span> <span class="n">result</span>
 
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">_extract_mock_name</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="n">_name_list</span> <span class="o">=</span> <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">_mock_new_name</span><span class="p">]</span>
         <span class="n">_parent</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_new_parent</span>
         <span class="n">last</span> <span class="o">=</span> <span class="bp">self</span>
@@ -676,7 +674,10 @@
             <span class="k">if</span> <span class="n">_name_list</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;()&#39;</span><span class="p">,</span> <span class="s1">&#39;().&#39;</span><span class="p">):</span>
                 <span class="n">_first</span> <span class="o">+=</span> <span class="s1">&#39;.&#39;</span>
         <span class="n">_name_list</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_first</span>
-        <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_name_list</span><span class="p">)</span>
+        <span class="k">return</span> <span class="s1">&#39;&#39;</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_name_list</span><span class="p">)</span>
+
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_mock_name</span><span class="p">()</span>
 
         <span class="n">name_string</span> <span class="o">=</span> <span class="s1">&#39;&#39;</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">(</span><span class="s1">&#39;mock&#39;</span><span class="p">,</span> <span class="s1">&#39;mock.&#39;</span><span class="p">):</span>
@@ -696,7 +697,7 @@
         <span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Filter the output of `dir(mock)` to only useful members.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">FILTER_DIR</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__dir__</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
@@ -712,7 +713,7 @@
                           <span class="nb">list</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_mock_children</span><span class="p">)))</span>
 
 
-    <span class="k">def</span> <span class="nf">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_allowed_names</span><span class="p">:</span>
             <span class="c1"># property setters go through here</span>
             <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
@@ -743,10 +744,15 @@
         <span class="k">else</span><span class="p">:</span>
             <span class="k">if</span> <span class="n">_check_and_set_parent</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
                 <span class="bp">self</span><span class="o">.</span><span class="n">_mock_children</span><span class="p">[</span><span class="n">name</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_sealed</span> <span class="ow">and</span> <span class="ow">not</span> <span class="nb">hasattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+            <span class="n">mock_name</span> <span class="o">=</span> <span class="sa">f</span><span class="s1">&#39;{self._extract_mock_name()}.</span><span class="si">{name}</span><span class="s1">&#39;</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;Cannot set </span><span class="si">{mock_name}</span><span class="s1">&#39;</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__setattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">value</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__delattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">name</span> <span class="ow">in</span> <span class="n">_all_magics</span> <span class="ow">and</span> <span class="n">name</span> <span class="ow">in</span> <span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
             <span class="nb">delattr</span><span class="p">(</span><span class="nb">type</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">name</span><span class="p">)</span>
             <span class="k">if</span> <span class="n">name</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">:</span>
@@ -926,6 +932,12 @@
                 <span class="n">klass</span> <span class="o">=</span> <span class="n">Mock</span>
         <span class="k">else</span><span class="p">:</span>
             <span class="n">klass</span> <span class="o">=</span> <span class="n">_type</span><span class="o">.</span><span class="vm">__mro__</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_mock_sealed</span><span class="p">:</span>
+            <span class="n">attribute</span> <span class="o">=</span> <span class="s2">&quot;.&quot;</span> <span class="o">+</span> <span class="n">kw</span><span class="p">[</span><span class="s2">&quot;name&quot;</span><span class="p">]</span> <span class="k">if</span> <span class="s2">&quot;name&quot;</span> <span class="ow">in</span> <span class="n">kw</span> <span class="k">else</span> <span class="s2">&quot;()&quot;</span>
+            <span class="n">mock_name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_extract_mock_name</span><span class="p">()</span> <span class="o">+</span> <span class="n">attribute</span>
+            <span class="k">raise</span> <span class="ne">AttributeError</span><span class="p">(</span><span class="n">mock_name</span><span class="p">)</span>
+
         <span class="k">return</span> <span class="n">klass</span><span class="p">(</span><span class="o">**</span><span class="n">kw</span><span class="p">)</span>
 
 
@@ -948,7 +960,7 @@
 
 <span class="k">class</span> <span class="nc">CallableMixin</span><span class="p">(</span><span class="n">Base</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">side_effect</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">return_value</span><span class="o">=</span><span class="n">DEFAULT</span><span class="p">,</span>
                  <span class="n">wraps</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">spec_set</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">_spec_state</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">_new_name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">_new_parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="vm">__dict__</span><span class="p">[</span><span class="s1">&#39;_mock_return_value&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">return_value</span>
@@ -966,7 +978,7 @@
         <span class="k">pass</span>
 
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="n">_mock_self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="n">_mock_self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="c1"># can&#39;t use self in-case a function / method we are mocking uses self</span>
         <span class="c1"># in the signature</span>
         <span class="n">_mock_self</span><span class="o">.</span><span class="n">_mock_check_sig</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
@@ -1129,7 +1141,7 @@
     <span class="n">attribute_name</span> <span class="o">=</span> <span class="kc">None</span>
     <span class="n">_active_patches</span> <span class="o">=</span> <span class="p">[]</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
             <span class="bp">self</span><span class="p">,</span> <span class="n">getter</span><span class="p">,</span> <span class="n">attribute</span><span class="p">,</span> <span class="n">new</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">create</span><span class="p">,</span>
             <span class="n">spec_set</span><span class="p">,</span> <span class="n">autospec</span><span class="p">,</span> <span class="n">new_callable</span><span class="p">,</span> <span class="n">kwargs</span>
         <span class="p">):</span>
@@ -1169,7 +1181,7 @@
         <span class="k">return</span> <span class="n">patcher</span>
 
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">func</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decorate_class</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decorate_callable</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
@@ -1253,7 +1265,7 @@
         <span class="k">return</span> <span class="n">original</span><span class="p">,</span> <span class="n">local</span>
 
 
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Perform the patch.&quot;&quot;&quot;</span>
         <span class="n">new</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">spec_set</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">new</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">spec_set</span>
         <span class="n">autospec</span><span class="p">,</span> <span class="n">kwargs</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">autospec</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">kwargs</span>
@@ -1379,7 +1391,7 @@
         <span class="k">return</span> <span class="n">new</span>
 
 
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">exc_info</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Undo the patch.&quot;&quot;&quot;</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="n">_is_started</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
             <span class="k">raise</span> <span class="ne">RuntimeError</span><span class="p">(</span><span class="s1">&#39;stop called on unstarted patcher&#39;</span><span class="p">)</span>
@@ -1611,7 +1623,7 @@
 <span class="sd">    `patch.TEST_PREFIX` for choosing which methods to wrap.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dict</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">(),</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">in_dict</span><span class="p">,</span> <span class="n">values</span><span class="o">=</span><span class="p">(),</span> <span class="n">clear</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">in_dict</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
             <span class="n">in_dict</span> <span class="o">=</span> <span class="n">_importer</span><span class="p">(</span><span class="n">in_dict</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">in_dict</span> <span class="o">=</span> <span class="n">in_dict</span>
@@ -1622,7 +1634,7 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_original</span> <span class="o">=</span> <span class="kc">None</span>
 
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">f</span><span class="p">):</span>
         <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">f</span><span class="p">,</span> <span class="nb">type</span><span class="p">):</span>
             <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">decorate_class</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
         <span class="nd">@wraps</span><span class="p">(</span><span class="n">f</span><span class="p">)</span>
@@ -1647,7 +1659,7 @@
         <span class="k">return</span> <span class="n">klass</span>
 
 
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Patch the dict.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_patch_dict</span><span class="p">()</span>
 
@@ -1691,7 +1703,7 @@
                 <span class="n">in_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">original</span><span class="p">[</span><span class="n">key</span><span class="p">]</span>
 
 
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Unpatch the dict.&quot;&quot;&quot;</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_unpatch_dict</span><span class="p">()</span>
         <span class="k">return</span> <span class="kc">False</span>
@@ -1799,7 +1811,7 @@
 
 
 <span class="k">def</span> <span class="nf">_get_eq</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
         <span class="n">ret_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__eq__</span><span class="o">.</span><span class="n">_mock_return_value</span>
         <span class="k">if</span> <span class="n">ret_val</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">DEFAULT</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">ret_val</span>
@@ -1809,7 +1821,7 @@
     <span class="k">return</span> <span class="fm">__eq__</span>
 
 <span class="k">def</span> <span class="nf">_get_ne</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__ne__</span><span class="o">.</span><span class="n">_mock_return_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="n">DEFAULT</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">DEFAULT</span>
         <span class="k">if</span> <span class="bp">self</span> <span class="ow">is</span> <span class="n">other</span><span class="p">:</span>
@@ -1818,7 +1830,7 @@
     <span class="k">return</span> <span class="fm">__ne__</span>
 
 <span class="k">def</span> <span class="nf">_get_iter</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__iter__</span><span class="p">():</span>
+    <span class="k">def</span> <span class="fm">__iter__</span><span class="p">():</span>
         <span class="n">ret_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__iter__</span><span class="o">.</span><span class="n">_mock_return_value</span>
         <span class="k">if</span> <span class="n">ret_val</span> <span class="ow">is</span> <span class="n">DEFAULT</span><span class="p">:</span>
             <span class="k">return</span> <span class="nb">iter</span><span class="p">([])</span>
@@ -1859,7 +1871,7 @@
 
 
 <span class="k">class</span> <span class="nc">MagicMixin</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mock_set_magics</span><span class="p">()</span>  <span class="c1"># make magic work for kwargs in init</span>
         <span class="n">_safe_super</span><span class="p">(</span><span class="n">MagicMixin</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kw</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_mock_set_magics</span><span class="p">()</span>  <span class="c1"># fix magic broken by upper level init</span>
@@ -1924,11 +1936,11 @@
 
 
 <span class="k">class</span> <span class="nc">MagicProxy</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">m</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_mock</span><span class="p">()</span>
         <span class="k">return</span> <span class="n">m</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
@@ -1941,7 +1953,7 @@
         <span class="n">_set_return_value</span><span class="p">(</span><span class="n">parent</span><span class="p">,</span> <span class="n">m</span><span class="p">,</span> <span class="n">entry</span><span class="p">)</span>
         <span class="k">return</span> <span class="n">m</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">_type</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">create_mock</span><span class="p">()</span>
 
 
@@ -1949,13 +1961,13 @@
 <span class="k">class</span> <span class="nc">_ANY</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
     <span class="s2">&quot;A helper object that compares equal to everything.&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">True</span>
 
-    <span class="k">def</span> <span class="nf">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__ne__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">return</span> <span class="kc">False</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="s1">&#39;&lt;ANY&gt;&#39;</span>
 
 <span class="n">ANY</span> <span class="o">=</span> <span class="n">_ANY</span><span class="p">()</span>
@@ -1999,7 +2011,7 @@
 
 <span class="sd">    If the _Call has no name then it will match any name.</span>
 <span class="sd">    &quot;&quot;&quot;</span>
-    <span class="k">def</span> <span class="nf">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">two</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">two</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                 <span class="n">from_kall</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">()</span>
         <span class="n">kwargs</span> <span class="o">=</span> <span class="p">{}</span>
@@ -2031,14 +2043,14 @@
         <span class="k">return</span> <span class="nb">tuple</span><span class="o">.</span><span class="fm">__new__</span><span class="p">(</span><span class="bp">cls</span><span class="p">,</span> <span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
 
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">two</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">value</span><span class="o">=</span><span class="p">(),</span> <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">two</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
                  <span class="n">from_kall</span><span class="o">=</span><span class="kc">True</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="o">=</span> <span class="n">name</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">parent</span> <span class="o">=</span> <span class="n">parent</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">from_kall</span> <span class="o">=</span> <span class="n">from_kall</span>
 
 
-    <span class="k">def</span> <span class="nf">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__eq__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">other</span><span class="p">):</span>
         <span class="k">if</span> <span class="n">other</span> <span class="ow">is</span> <span class="n">ANY</span><span class="p">:</span>
             <span class="k">return</span> <span class="kc">True</span>
         <span class="k">try</span><span class="p">:</span>
@@ -2092,7 +2104,7 @@
     <span class="fm">__ne__</span> <span class="o">=</span> <span class="nb">object</span><span class="o">.</span><span class="fm">__ne__</span>
 
 
-    <span class="k">def</span> <span class="nf">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__call__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_Call</span><span class="p">((</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="s1">&#39;()&#39;</span><span class="p">)</span>
 
@@ -2100,7 +2112,7 @@
         <span class="k">return</span> <span class="n">_Call</span><span class="p">((</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">),</span> <span class="n">name</span><span class="o">=</span><span class="n">name</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="bp">self</span><span class="p">)</span>
 
 
-    <span class="k">def</span> <span class="nf">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__getattr__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">attr</span><span class="p">):</span>
         <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">return</span> <span class="n">_Call</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="n">attr</span><span class="p">,</span> <span class="n">from_kall</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span>
         <span class="n">name</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="si">%s</span><span class="s1">.</span><span class="si">%s</span><span class="s1">&#39;</span> <span class="o">%</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">name</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
@@ -2113,7 +2125,7 @@
     <span class="k">def</span> <span class="nf">index</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="fm">__getattr__</span><span class="p">(</span><span class="s1">&#39;index&#39;</span><span class="p">)(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__repr__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">from_kall</span><span class="p">:</span>
             <span class="n">name</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">name</span> <span class="ow">or</span> <span class="s1">&#39;call&#39;</span>
             <span class="k">if</span> <span class="n">name</span><span class="o">.</span><span class="n">startswith</span><span class="p">(</span><span class="s1">&#39;()&#39;</span><span class="p">):</span>
@@ -2310,7 +2322,7 @@
 
 <span class="k">class</span> <span class="nc">_SpecState</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">spec_set</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">spec</span><span class="p">,</span> <span class="n">spec_set</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">parent</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
                  <span class="n">name</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">ids</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">instance</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">spec</span> <span class="o">=</span> <span class="n">spec</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">ids</span> <span class="o">=</span> <span class="n">ids</span>
@@ -2378,14 +2390,16 @@
         <span class="k">return</span> <span class="nb">type</span><span class="p">(</span><span class="n">read_data</span><span class="p">)()</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">_state</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
 
     <span class="k">def</span> <span class="nf">_readline_side_effect</span><span class="p">():</span>
+        <span class="k">yield from</span> <span class="n">_iter_side_effect</span><span class="p">()</span>
+        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
+            <span class="k">yield</span> <span class="nb">type</span><span class="p">(</span><span class="n">read_data</span><span class="p">)()</span>
+
+    <span class="k">def</span> <span class="nf">_iter_side_effect</span><span class="p">():</span>
         <span class="k">if</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="o">.</span><span class="n">return_value</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
             <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
                 <span class="k">yield</span> <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="o">.</span><span class="n">return_value</span>
         <span class="k">for</span> <span class="n">line</span> <span class="ow">in</span> <span class="n">_state</span><span class="p">[</span><span class="mi">0</span><span class="p">]:</span>
             <span class="k">yield</span> <span class="n">line</span>
-        <span class="k">while</span> <span class="kc">True</span><span class="p">:</span>
-            <span class="k">yield</span> <span class="nb">type</span><span class="p">(</span><span class="n">read_data</span><span class="p">)()</span>
-
 
     <span class="k">global</span> <span class="n">file_spec</span>
     <span class="k">if</span> <span class="n">file_spec</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
@@ -2409,6 +2423,7 @@
     <span class="n">_state</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">_readline_side_effect</span><span class="p">()</span>
     <span class="n">handle</span><span class="o">.</span><span class="n">readline</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">_state</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
     <span class="n">handle</span><span class="o">.</span><span class="n">readlines</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">_readlines_side_effect</span>
+    <span class="n">handle</span><span class="o">.</span><span class="fm">__iter__</span><span class="o">.</span><span class="n">side_effect</span> <span class="o">=</span> <span class="n">_iter_side_effect</span>
 
     <span class="k">def</span> <span class="nf">reset_data</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="n">_state</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">_iterate_read_data</span><span class="p">(</span><span class="n">read_data</span><span class="p">)</span>
@@ -2435,10 +2450,33 @@
     <span class="k">def</span> <span class="nf">_get_child_mock</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">return</span> <span class="n">MagicMock</span><span class="p">(</span><span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__get__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">obj_type</span><span class="p">):</span>
         <span class="k">return</span> <span class="bp">self</span><span class="p">()</span>
-    <span class="k">def</span> <span class="nf">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__set__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">obj</span><span class="p">,</span> <span class="n">val</span><span class="p">):</span>
         <span class="bp">self</span><span class="p">(</span><span class="n">val</span><span class="p">)</span>
+
+
+<span class="k">def</span> <span class="nf">seal</span><span class="p">(</span><span class="n">mock</span><span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;Disable the automatic generation of &quot;submocks&quot;</span>
+
+<span class="sd">    Given an input Mock, seals it to ensure no further mocks will be generated</span>
+<span class="sd">    when accessing an attribute that was not already defined.</span>
+
+<span class="sd">    Submocks are defined as all mocks which were created DIRECTLY from the</span>
+<span class="sd">    parent. If a mock is assigned to an attribute of an existing mock,</span>
+<span class="sd">    it is not considered a submock.</span>
+
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">mock</span><span class="o">.</span><span class="n">_mock_sealed</span> <span class="o">=</span> <span class="kc">True</span>
+    <span class="k">for</span> <span class="n">attr</span> <span class="ow">in</span> <span class="nb">dir</span><span class="p">(</span><span class="n">mock</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">m</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="n">mock</span><span class="p">,</span> <span class="n">attr</span><span class="p">)</span>
+        <span class="k">except</span> <span class="ne">AttributeError</span><span class="p">:</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">m</span><span class="p">,</span> <span class="n">NonCallableMock</span><span class="p">):</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="n">m</span><span class="o">.</span><span class="n">_mock_new_parent</span> <span class="ow">is</span> <span class="n">mock</span><span class="p">:</span>
+            <span class="n">seal</span><span class="p">(</span><span class="n">m</span><span class="p">)</span>
 </pre></div>
 
           </div>

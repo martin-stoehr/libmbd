@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p>13.7% of total for derived types.</p>Including implementation: 27 statements,  4.8% of total for derived types.">27 statements</a>
+    title="<p>14.5% of total for derived types.</p>Including implementation: 29 statements,  5.0% of total for derived types.">29 statements</a>
      </li> 
      
      
@@ -177,7 +177,11 @@
       
       <a class="list-group-item" href="../type/mbd_input_t.html#variable-comm">comm</a>
       
-      <a class="list-group-item" href="../type/mbd_input_t.html#variable-debug">debug</a>
+      <a class="list-group-item" href="../type/mbd_input_t.html#variable-max_atoms_per_block">max_atoms_per_block</a>
+      
+      <a class="list-group-item" href="../type/mbd_input_t.html#variable-log_level">log_level</a>
+      
+      <a class="list-group-item" href="../type/mbd_input_t.html#variable-printer">printer</a>
       
       <a class="list-group-item" href="../type/mbd_input_t.html#variable-calculate_forces">calculate_forces</a>
       
@@ -275,7 +279,11 @@
       
       <a class="list-group-item" href="../type/mbd_input_t.html#variable-comm">comm</a>
       
-      <a class="list-group-item" href="../type/mbd_input_t.html#variable-debug">debug</a>
+      <a class="list-group-item" href="../type/mbd_input_t.html#variable-max_atoms_per_block">max_atoms_per_block</a>
+      
+      <a class="list-group-item" href="../type/mbd_input_t.html#variable-log_level">log_level</a>
+      
+      <a class="list-group-item" href="../type/mbd_input_t.html#variable-printer">printer</a>
       
       <a class="list-group-item" href="../type/mbd_input_t.html#variable-calculate_forces">calculate_forces</a>
       
@@ -403,11 +411,39 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-debug"></span>logical,</td>
+  <td><span class="anchor" id="variable-max_atoms_per_block"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>debug</strong></td><td> =</td><td>.false.</td><td><p>Whether debugging info should be printer</p></td>
+  <td><strong>max_atoms_per_block</strong></td><td> =</td><td>6</td><td><p>Number of atoms per block in a BLACS grid.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-log_level"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>log_level</strong></td><td> =</td><td>MBD_LOG_LVL_INFO</td><td><p>Level of printing</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-printer"></span>procedure(printer_i),</td>
+  
+  <td>public,</td>
+  <td>nopass, pointer</td><td>::</td>
+  <td><strong>printer</strong></td><td>=> </td><td>null()</td><td><p>If assigned, will be used for logging</p></td>
   
 </tr>
 

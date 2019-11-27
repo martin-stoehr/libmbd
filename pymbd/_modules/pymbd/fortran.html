@@ -35,16 +35,16 @@
 <span></span><span class="c1"># This Source Code Form is subject to the terms of the Mozilla Public</span>
 <span class="c1"># License, v. 2.0. If a copy of the MPL was not distributed with this</span>
 <span class="c1"># file, You can obtain one at http://mozilla.org/MPL/2.0/.</span>
-<span class="kn">from</span> <span class="nn">__future__</span> <span class="k">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>
+<span class="kn">from</span> <span class="nn">__future__</span> <span class="kn">import</span> <span class="n">division</span><span class="p">,</span> <span class="n">print_function</span>
 
-<span class="kn">from</span> <span class="nn">functools</span> <span class="k">import</span> <span class="n">wraps</span>
+<span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 
 <span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
 
-<span class="kn">from</span> <span class="nn">.pymbd</span> <span class="k">import</span> <span class="n">_array</span><span class="p">,</span> <span class="n">from_volumes</span>
+<span class="kn">from</span> <span class="nn">.pymbd</span> <span class="kn">import</span> <span class="n">_array</span><span class="p">,</span> <span class="n">from_volumes</span>
 
 <span class="k">try</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">._libmbd</span> <span class="k">import</span> <span class="n">ffi</span> <span class="k">as</span> <span class="n">_ffi</span><span class="p">,</span> <span class="n">lib</span> <span class="k">as</span> <span class="n">_lib</span>
+    <span class="kn">from</span> <span class="nn">._libmbd</span> <span class="kn">import</span> <span class="n">ffi</span> <span class="k">as</span> <span class="n">_ffi</span><span class="p">,</span> <span class="n">lib</span> <span class="k">as</span> <span class="n">_lib</span>
 <span class="k">except</span> <span class="ne">ImportError</span><span class="p">:</span>
     <span class="k">raise</span> <span class="ne">Exception</span><span class="p">(</span><span class="s1">&#39;Pymbd C extension unimportable, cannot use Fortran&#39;</span><span class="p">)</span>
 
@@ -57,11 +57,11 @@
 <span class="sd">&quot;&quot;&quot;Whether Libmbd was compiled with Scalapack&quot;&quot;&quot;</span>
 
 <span class="k">if</span> <span class="n">with_mpi</span><span class="p">:</span>
-    <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="k">import</span> <span class="n">MPI</span>  <span class="c1"># noqa</span>
+    <span class="kn">from</span> <span class="nn">mpi4py</span> <span class="kn">import</span> <span class="n">MPI</span>  <span class="c1"># noqa</span>
 
 
 <span class="k">class</span> <span class="nc">MBDFortranException</span><span class="p">(</span><span class="ne">Exception</span><span class="p">):</span>
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">origin</span><span class="p">,</span> <span class="n">msg</span><span class="p">):</span>
         <span class="nb">super</span><span class="p">(</span><span class="n">MBDFortranException</span><span class="p">,</span> <span class="bp">self</span><span class="p">)</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">code</span> <span class="o">=</span> <span class="n">code</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">origin</span> <span class="o">=</span> <span class="n">origin</span>
@@ -92,17 +92,18 @@
 <span class="sd">    :param bool rpa_rescale_eigs: whether to rescale RPA eigenvalues</span>
 <span class="sd">    &quot;&quot;&quot;</span>
 
-    <span class="k">def</span> <span class="nf">__init__</span><span class="p">(</span>
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span>
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">coords</span><span class="p">,</span>
         <span class="n">lattice</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">k_grid</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">custom_k_pts</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
-        <span class="n">n_freq</span><span class="o">=</span><span class="mi">15</span><span class="p">,</span>
+        <span class="n">n_freq</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">do_rpa</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">get_spectrum</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">get_rpa_orders</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
         <span class="n">rpa_rescale_eigs</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
+        <span class="n">max_atoms_per_block</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
     <span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_geom_f</span> <span class="o">=</span> <span class="kc">None</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">_array</span><span class="p">,</span> <span class="p">(</span><span class="n">coords</span><span class="p">,</span> <span class="n">lattice</span><span class="p">))</span>
@@ -113,11 +114,12 @@
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_spectrum</span> <span class="o">=</span> <span class="n">get_spectrum</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_get_rpa_orders</span> <span class="o">=</span> <span class="n">get_rpa_orders</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_rpa_rescale_eigs</span> <span class="o">=</span> <span class="n">rpa_rescale_eigs</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">_max_atoms_per_block</span> <span class="o">=</span> <span class="n">max_atoms_per_block</span>
 
-    <span class="k">def</span> <span class="nf">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__len__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="k">return</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="p">)</span>
 
-    <span class="k">def</span> <span class="nf">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__enter__</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_geom_f</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_init_geom</span><span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span>
             <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_coords</span><span class="p">),</span>
@@ -125,15 +127,16 @@
             <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;int*&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_k_grid</span><span class="p">),</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_custom_k_pts</span><span class="p">)</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_k_pts</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span> <span class="k">else</span> <span class="mi">0</span><span class="p">,</span>
             <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">_custom_k_pts</span><span class="p">),</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_n_freq</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_n_freq</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_do_rpa</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_spectrum</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_get_rpa_orders</span><span class="p">,</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_rpa_rescale_eigs</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_max_atoms_per_block</span> <span class="ow">or</span> <span class="mi">0</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="k">return</span> <span class="bp">self</span>
 
-    <span class="k">def</span> <span class="nf">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
+    <span class="k">def</span> <span class="fm">__exit__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">exc_type</span><span class="p">,</span> <span class="n">exc_value</span><span class="p">,</span> <span class="n">traceback</span><span class="p">):</span>
         <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_destroy_geom</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">_geom_f</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_geom_f</span> <span class="o">=</span> <span class="kc">None</span>
 

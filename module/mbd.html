@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 9.5% of total for modules and submodules.">228 statements</a>
+    title=" 9.4% of total for modules and submodules.">231 statements</a>
      </li> 
      
      
@@ -370,11 +370,39 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-debug"></span>logical,</td>
+  <td><span class="anchor" id="variable-max_atoms_per_block"></span>integer,</td>
   
   <td>public</td>
   <td></td><td>::</td>
-  <td><strong>debug</strong></td><td> =</td><td>.false.</td><td><p>Whether debugging info should be printer</p></td>
+  <td><strong>max_atoms_per_block</strong></td><td> =</td><td>6</td><td><p>Number of atoms per block in a BLACS grid.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-log_level"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>log_level</strong></td><td> =</td><td>MBD_LOG_LVL_INFO</td><td><p>Level of printing</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-printer"></span>procedure(printer_i),</td>
+  
+  <td>public,</td>
+  <td>nopass, pointer</td><td>::</td>
+  <td><strong>printer</strong></td><td>=> </td><td>null()</td><td><p>If assigned, will be used for logging</p></td>
   
 </tr>
 

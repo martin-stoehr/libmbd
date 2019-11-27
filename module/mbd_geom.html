@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 8.1% of total for modules and submodules.">196 statements</a>
+    title=" 8.6% of total for modules and submodules.">213 statements</a>
      </li> 
      
      
@@ -396,7 +396,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-k_grid_shift%7E2"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-k_grid_shift~2"></span>real(kind=dp),</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -424,7 +424,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-zero_negative_eigvals%7E2"></span>logical,</td>
+  <td><span class="anchor" id="variable-zero_negative_eigvals~2"></span>logical,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -438,7 +438,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-rpa_rescale_eigs%7E2"></span>logical,</td>
+  <td><span class="anchor" id="variable-rpa_rescale_eigs~2"></span>logical,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -514,7 +514,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-coords%7E2"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-coords~2"></span>real(kind=dp),</td>
   
   <td>public,</td>
   <td>allocatable</td><td>::</td>
@@ -543,7 +543,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-k_grid%7E2"></span>integer,</td>
+  <td><span class="anchor" id="variable-k_grid~2"></span>integer,</td>
   
   <td>public,</td>
   <td>allocatable</td><td>::</td>
@@ -571,7 +571,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-parallel_mode%7E2"></span>character(len=10),</td>
+  <td><span class="anchor" id="variable-parallel_mode~2"></span>character(len=10),</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -619,7 +619,7 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-do_rpa%7E2"></span>logical,</td>
+  <td><span class="anchor" id="variable-do_rpa~2"></span>logical,</td>
   
   <td>public</td>
   <td></td><td>::</td>
@@ -633,11 +633,25 @@
   
 <tr>
   
-  <td><span class="anchor" id="variable-get_rpa_orders%7E2"></span>logical,</td>
+  <td><span class="anchor" id="variable-get_rpa_orders~2"></span>logical,</td>
   
   <td>public</td>
   <td></td><td>::</td>
   <td><strong>get_rpa_orders</strong></td><td> =</td><td>.false.</td><td><p>Whether to calculate RPA orders</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-log"></span>type(logger_t),</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>log</strong></td><td></td><td></td><td><p>Used for logging</p></td>
   
 </tr>
 
@@ -652,6 +666,20 @@
   <td>public</td>
   <td></td><td>::</td>
   <td><strong>mpi_comm</strong></td><td> =</td><td>MPI_COMM_WORLD</td><td><p>MPI communicator</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-max_atoms_per_block~2"></span>integer,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>max_atoms_per_block</strong></td><td> =</td><td>6</td><td></td>
   
 </tr>
 
@@ -848,10 +876,10 @@
       <table class="table table-striped varlist">
       <tbody>
       
-       <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-init%7E3'>init</a></strong>  => geom_init </td>
+       <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-init~3'>init</a></strong>  => geom_init </td>
        <td></td></tr>
       
-       <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-destroy%7E2'>destroy</a></strong>  => geom_destroy </td>
+       <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-destroy~2'>destroy</a></strong>  => geom_destroy </td>
        <td></td></tr>
       
        <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-siz'>siz</a></strong>  => geom_siz </td>
@@ -860,7 +888,7 @@
        <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-has_exc'>has_exc</a></strong>  => geom_has_exc </td>
        <td></td></tr>
       
-       <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-clock%7E2'>clock</a></strong>  => geom_clock </td>
+       <tr><td>procedure, public :: <strong><a href='../type/geom_t.html#boundprocedure-clock~2'>clock</a></strong>  => geom_clock </td>
        <td></td></tr>
       
        </tbody>
