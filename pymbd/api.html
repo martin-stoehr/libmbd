@@ -1,18 +1,19 @@
 
 <!DOCTYPE html>
 
-<html xmlns="http://www.w3.org/1999/xhtml">
+<html>
   <head>
     <meta charset="utf-8" />
-    <title>API &#8212; libmbd 0.8.0 documentation</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>API &#8212; Libmbd 0.9.0 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-    <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
-    <script type="text/javascript" src="_static/jquery.js"></script>
-    <script type="text/javascript" src="_static/underscore.js"></script>
-    <script type="text/javascript" src="_static/doctools.js"></script>
-    <script type="text/javascript" src="_static/language_data.js"></script>
-    <script async="async" type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+    <script src="_static/jquery.js"></script>
+    <script src="_static/underscore.js"></script>
+    <script src="_static/doctools.js"></script>
+    <script src="_static/language_data.js"></script>
+    <script async="async" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="prev" title="Welcome to Pymbd" href="index.html" />
@@ -36,9 +37,9 @@
 <h1>API<a class="headerlink" href="#api" title="Permalink to this headline">¶</a></h1>
 <div class="section" id="module-pymbd">
 <span id="pure-python-implementation"></span><h2>Pure-Python implementation<a class="headerlink" href="#module-pymbd" title="Permalink to this headline">¶</a></h2>
-<dl class="function">
+<dl class="py function">
 <dt id="pymbd.mbd_energy">
-<code class="sig-prename descclassname">pymbd.</code><code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">alpha_0</em>, <em class="sig-param">C6</em>, <em class="sig-param">R_vdw</em>, <em class="sig-param">beta</em>, <em class="sig-param">lattice=None</em>, <em class="sig-param">k_grid=None</em>, <em class="sig-param">nfreq=15</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/pymbd.html#mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.mbd_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pymbd.</code><code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span></em>, <em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">lattice</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">k_grid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nfreq</span><span class="o">=</span><span class="default_value">15</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/pymbd.html#mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.mbd_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an MBD energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -56,9 +57,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="pymbd.mbd_energy_species">
-<code class="sig-prename descclassname">pymbd.</code><code class="sig-name descname">mbd_energy_species</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">species</em>, <em class="sig-param">volume_ratios</em>, <em class="sig-param">beta</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/pymbd.html#mbd_energy_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.mbd_energy_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pymbd.</code><code class="sig-name descname">mbd_energy_species</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span></em>, <em class="sig-param"><span class="n">species</span></em>, <em class="sig-param"><span class="n">volume_ratios</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/pymbd.html#mbd_energy_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.mbd_energy_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an MBD energy from atom types and Hirshfed-volume ratios.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -73,9 +74,9 @@
 </dl>
 </dd></dl>
 
-<dl class="function">
+<dl class="py function">
 <dt id="pymbd.screening">
-<code class="sig-prename descclassname">pymbd.</code><code class="sig-name descname">screening</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">alpha_0</em>, <em class="sig-param">C6</em>, <em class="sig-param">R_vdw</em>, <em class="sig-param">beta</em>, <em class="sig-param">lattice=None</em>, <em class="sig-param">nfreq=15</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/pymbd.html#screening"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.screening" title="Permalink to this definition">¶</a></dt>
+<code class="sig-prename descclassname">pymbd.</code><code class="sig-name descname">screening</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span></em>, <em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">lattice</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">nfreq</span><span class="o">=</span><span class="default_value">15</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/pymbd.html#screening"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.screening" title="Permalink to this definition">¶</a></dt>
 <dd><p>Screen atomic polarizabilities.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -94,7 +95,7 @@
 <span class="math notranslate nohighlight">\(R_\mathrm{vdw}\)</span> coefficients (a.u.).</p>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="pymbd.pymbd.ang">
 <code class="sig-prename descclassname">pymbd.pymbd.</code><code class="sig-name descname">ang</code><em class="property"> = 1.8897259885789233</em><a class="headerlink" href="#pymbd.pymbd.ang" title="Permalink to this definition">¶</a></dt>
 <dd><p>(a.u.) angstrom</p>
@@ -104,9 +105,9 @@
 </div>
 <div class="section" id="module-pymbd.fortran">
 <span id="fortran-bindings"></span><h2>Fortran bindings<a class="headerlink" href="#module-pymbd.fortran" title="Permalink to this headline">¶</a></h2>
-<dl class="class">
+<dl class="py class">
 <dt id="pymbd.fortran.MBDGeom">
-<em class="property">class </em><code class="sig-prename descclassname">pymbd.fortran.</code><code class="sig-name descname">MBDGeom</code><span class="sig-paren">(</span><em class="sig-param">coords</em>, <em class="sig-param">lattice=None</em>, <em class="sig-param">k_grid=None</em>, <em class="sig-param">custom_k_pts=None</em>, <em class="sig-param">n_freq=None</em>, <em class="sig-param">do_rpa=False</em>, <em class="sig-param">get_spectrum=False</em>, <em class="sig-param">get_rpa_orders=False</em>, <em class="sig-param">rpa_rescale_eigs=False</em>, <em class="sig-param">max_atoms_per_block=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom" title="Permalink to this definition">¶</a></dt>
+<em class="property">class </em><code class="sig-prename descclassname">pymbd.fortran.</code><code class="sig-name descname">MBDGeom</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">coords</span></em>, <em class="sig-param"><span class="n">lattice</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">k_grid</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">custom_k_pts</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">n_freq</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">do_rpa</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">get_spectrum</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">get_rpa_orders</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">rpa_rescale_eigs</span><span class="o">=</span><span class="default_value">False</span></em>, <em class="sig-param"><span class="n">max_atoms_per_block</span><span class="o">=</span><span class="default_value">None</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom" title="Permalink to this definition">¶</a></dt>
 <dd><p>Represents an initialized Libmbd <a class="reference external" href="../type/geom_t.html">geom_t</a> object.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -123,27 +124,27 @@
 </ul>
 </dd>
 </dl>
-<dl class="method">
+<dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.coords">
 <em class="property">property </em><code class="sig-name descname">coords</code><a class="headerlink" href="#pymbd.fortran.MBDGeom.coords" title="Permalink to this definition">¶</a></dt>
 <dd><p>(a.u.) Atom coordinates in rows.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.has_lattice">
 <code class="sig-name descname">has_lattice</code><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.has_lattice"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.has_lattice" title="Permalink to this definition">¶</a></dt>
 <dd><p>True if a crystal.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.lattice">
 <em class="property">property </em><code class="sig-name descname">lattice</code><a class="headerlink" href="#pymbd.fortran.MBDGeom.lattice" title="Permalink to this definition">¶</a></dt>
 <dd><p>(a.u.) Lattice vectors in rows.</p>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.mbd_energy">
-<code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param">alpha_0</em>, <em class="sig-param">C6</em>, <em class="sig-param">R_vdw</em>, <em class="sig-param">beta</em>, <em class="sig-param">a=6.0</em>, <em class="sig-param">damping='fermi</em>, <em class="sig-param">dip'</em>, <em class="sig-param">variant='rsscs'</em>, <em class="sig-param">force=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an MBD energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -161,9 +162,9 @@
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.mbd_energy_species">
-<code class="sig-name descname">mbd_energy_species</code><span class="sig-paren">(</span><em class="sig-param">species</em>, <em class="sig-param">volume_ratios</em>, <em class="sig-param">beta</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mbd_energy_species</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species</span></em>, <em class="sig-param"><span class="n">volume_ratios</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an MBD energy from atom types and Hirshfed-volume ratios.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -178,9 +179,9 @@ molecule and vacuum</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.ts_energy">
-<code class="sig-name descname">ts_energy</code><span class="sig-paren">(</span><em class="sig-param">alpha_0</em>, <em class="sig-param">C6</em>, <em class="sig-param">R_vdw</em>, <em class="sig-param">sR</em>, <em class="sig-param">d=20.0</em>, <em class="sig-param">damping='fermi'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a TS energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -196,9 +197,9 @@ molecule and vacuum</p></li>
 </dl>
 </dd></dl>
 
-<dl class="method">
+<dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.ts_energy_species">
-<code class="sig-name descname">ts_energy_species</code><span class="sig-paren">(</span><em class="sig-param">species</em>, <em class="sig-param">volume_ratios</em>, <em class="sig-param">beta</em>, <em class="sig-param">**kwargs</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy_species" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_energy_species</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">species</span></em>, <em class="sig-param"><span class="n">volume_ratios</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy_species"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy_species" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a TS energy from atom types and Hirshfed-volume ratios.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -215,13 +216,13 @@ molecule and vacuum</p></li>
 
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="pymbd.fortran.with_mpi">
 <code class="sig-prename descclassname">pymbd.fortran.</code><code class="sig-name descname">with_mpi</code><a class="headerlink" href="#pymbd.fortran.with_mpi" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether Libmbd was compiled with MPI</p>
 </dd></dl>
 
-<dl class="data">
+<dl class="py data">
 <dt id="pymbd.fortran.with_scalapack">
 <code class="sig-prename descclassname">pymbd.fortran.</code><code class="sig-name descname">with_scalapack</code><a class="headerlink" href="#pymbd.fortran.with_scalapack" title="Permalink to this definition">¶</a></dt>
 <dd><p>Whether Libmbd was compiled with Scalapack</p>
@@ -237,7 +238,7 @@ molecule and vacuum</p></li>
       </div>
       <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
         <div class="sphinxsidebarwrapper">
-<h1 class="logo"><a href="index.html">libmbd</a></h1>
+<h1 class="logo"><a href="index.html">Libmbd</a></h1>
 
 
 
@@ -305,16 +306,16 @@ molecule and vacuum</p></li>
     </form>
     </div>
 </div>
-<script type="text/javascript">$('#searchbox').show(0);</script>
+<script>$('#searchbox').show(0);</script>
         </div>
       </div>
       <div class="clearer"></div>
     </div>
     <div class="footer">
-      &copy;2018-2019, Jan Hermann.
+      &copy;2018-2020, Jan Hermann.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 2.2.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

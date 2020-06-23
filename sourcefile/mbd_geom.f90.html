@@ -376,12 +376,12 @@
 <a name="ln-111"></a><span class="k">subroutine </span><span class="n">geom_init</span><span class="p">(</span><span class="n">this</span><span class="p">)</span>
 <a name="ln-112"></a>    <span class="k">class</span><span class="p">(</span><span class="n">geom_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">this</span>
 <a name="ln-113"></a>
-<a name="ln-114"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i_atom</span><span class="p">,</span> <span class="n">n_kpts</span>
+<a name="ln-114"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i_atom</span>
 <a name="ln-115"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">volume</span>
 <a name="ln-116"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">is_parallel</span>
 <a name="ln-117"></a><span class="cp">#ifdef WITH_MPI</span>
 <a name="ln-118"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">can_parallel_kpts</span>
-<a name="ln-119"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">ierr</span>
+<a name="ln-119"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">ierr</span><span class="p">,</span> <span class="n">n_kpts</span>
 <a name="ln-120"></a><span class="cp">#endif</span>
 <a name="ln-121"></a>
 <a name="ln-122"></a>    <span class="k">associate</span> <span class="p">(</span><span class="n">n</span> <span class="o">=&gt;</span> <span class="n">this</span><span class="p">%</span><span class="n">param</span><span class="p">%</span><span class="n">n_freq</span><span class="p">)</span>
@@ -584,7 +584,7 @@
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2019 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+        <div class="col-xs-6 col-md-4"><p>&copy; 2020 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
