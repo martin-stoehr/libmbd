@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="10.4% of total for source files.">257 statements</a>
+    title="10.4% of total for source files.">258 statements</a>
      </li> 
      
      
@@ -428,8 +428,8 @@
 <a name="ln-163"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_request_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">grad</span>
 <a name="ln-164"></a>
 <a name="ln-165"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">alpha_dyn</span><span class="p">(:,</span> <span class="p">:),</span> <span class="n">alpha_dyn_scs</span><span class="p">(:,</span> <span class="p">:),</span> <span class="p">&amp;</span>
-<a name="ln-166"></a>        <span class="n">C6_scs</span><span class="p">(:),</span> <span class="n">dC6_scs_dalpha_dyn_scs</span><span class="p">(:,</span> <span class="p">:),</span> <span class="p">&amp;</span>
-<a name="ln-167"></a>        <span class="n">dene_dalpha_scs_dyn</span><span class="p">(:,</span> <span class="p">:),</span> <span class="n">freq_w</span><span class="p">(:),</span> <span class="n">omega</span><span class="p">(:)</span>
+<a name="ln-166"></a>        <span class="n">dC6_scs_dalpha_dyn_scs</span><span class="p">(:,</span> <span class="p">:),</span> <span class="n">dene_dalpha_scs_dyn</span><span class="p">(:,</span> <span class="p">:),</span> <span class="n">freq_w</span><span class="p">(:),</span> <span class="n">omega</span><span class="p">(:)</span>
+<a name="ln-167"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">C6_scs</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">alpha_0</span><span class="p">))</span>  <span class="c">! circumventing PGI 19 compiler bug</span>
 <a name="ln-168"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_t</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dalpha_dyn</span><span class="p">(:),</span> <span class="n">dalpha_dyn_scs</span><span class="p">(:,</span> <span class="p">:)</span>
 <a name="ln-169"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_t</span><span class="p">)</span> <span class="kd">::</span> <span class="n">dE</span><span class="p">,</span> <span class="n">dr_vdw_scs</span><span class="p">,</span> <span class="n">domega</span>
 <a name="ln-170"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_request_t</span><span class="p">)</span> <span class="kd">::</span> <span class="n">grad_scs</span>
