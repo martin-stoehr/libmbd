@@ -386,11 +386,11 @@
 <a name="ln-121"></a><span class="k">    case</span> <span class="p">(</span><span class="s1">&#39;mbd-nl&#39;</span><span class="p">)</span>
 <a name="ln-122"></a>        <span class="k">select case</span> <span class="p">(</span><span class="n">lower</span><span class="p">(</span><span class="n">xc</span><span class="p">))</span>
 <a name="ln-123"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;pbe&#39;</span><span class="p">)</span>
-<a name="ln-124"></a>            <span class="n">this</span><span class="p">%</span><span class="n">a</span> <span class="o">=</span> <span class="mf">0.81d0</span>
+<a name="ln-124"></a>            <span class="n">this</span><span class="p">%</span><span class="n">beta</span> <span class="o">=</span> <span class="mf">0.81d0</span>
 <a name="ln-125"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;pbe0&#39;</span><span class="p">)</span>
-<a name="ln-126"></a>            <span class="n">this</span><span class="p">%</span><span class="n">a</span> <span class="o">=</span> <span class="mf">0.83d0</span>
+<a name="ln-126"></a>            <span class="n">this</span><span class="p">%</span><span class="n">beta</span> <span class="o">=</span> <span class="mf">0.83d0</span>
 <a name="ln-127"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;hse&#39;</span><span class="p">)</span>
-<a name="ln-128"></a>            <span class="n">this</span><span class="p">%</span><span class="n">a</span> <span class="o">=</span> <span class="mf">0.83d0</span>
+<a name="ln-128"></a>            <span class="n">this</span><span class="p">%</span><span class="n">beta</span> <span class="o">=</span> <span class="mf">0.83d0</span>
 <a name="ln-129"></a>        <span class="k">case </span><span class="n">default</span>
 <a name="ln-130"></a>            <span class="n">exc</span><span class="p">%</span><span class="n">code</span> <span class="o">=</span> <span class="n">MBD_EXC_DAMPING</span>
 <a name="ln-131"></a>            <span class="n">exc</span><span class="p">%</span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Damping parameter beta of method MBD-NL unknown for &#39;</span> <span class="o">//</span> <span class="nb">trim</span><span class="p">(</span><span class="n">xc</span><span class="p">)</span>
