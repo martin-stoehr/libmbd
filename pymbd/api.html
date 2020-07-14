@@ -144,7 +144,7 @@
 
 <dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.mbd_energy">
-<code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">6.0</span></em>, <em class="sig-param"><span class="n">damping</span><span class="o">=</span><span class="default_value">'fermi,dip'</span></em>, <em class="sig-param"><span class="n">variant</span><span class="o">=</span><span class="default_value">'rsscs'</span></em>, <em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an MBD energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -181,7 +181,7 @@ molecule and vacuum</p></li>
 
 <dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.ts_energy">
-<code class="sig-name descname">ts_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="o">*</span><span class="n">args</span></em>, <em class="sig-param"><span class="o">**</span><span class="n">kwargs</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span></em>, <em class="sig-param"><span class="n">sR</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">20.0</span></em>, <em class="sig-param"><span class="n">damping</span><span class="o">=</span><span class="default_value">'fermi'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a TS energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -315,7 +315,7 @@ molecule and vacuum</p></li>
       &copy;2018-2020, Jan Hermann.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.1</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |

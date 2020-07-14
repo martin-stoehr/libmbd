@@ -10,7 +10,7 @@
     <meta name="author" content="" >
     <link rel="icon" href="../favicon.png">
 
-    <title>run_scs &ndash; Libmbd</title>
+    <title>get_ts_energy_num_grad &ndash; Libmbd</title>
 
     <link href="../css/bootstrap.min.css" rel="stylesheet">
     <link href="../css/pygments.css" rel="stylesheet">
@@ -110,7 +110,7 @@
     
   
   <div class="row">
-    <h1>run_scs
+    <h1>get_ts_energy_num_grad
       <small>Function</small>
     
     </h1>
@@ -128,24 +128,24 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="15.9% of total for procedures.">106 statements</a>
+    title=" 6.7% of total for procedures.">45 statements</a>
      </li> 
      
      
      
-    <li><i class="fa fa-code"></i><a href="../src/mbd_scs.f90"> Source File</a></li>
+    <li><i class="fa fa-code"></i><a href="../src/mbd_ts.f90"> Source File</a></li>
      
      
   </ul>
   <ol class="breadcrumb in-well text-right">
   
     
-     <li><a href='../sourcefile/mbd_scs.f90.html'>mbd_scs.f90</a></li>
+     <li><a href='../sourcefile/mbd_ts.f90.html'>mbd_ts.f90</a></li>
     
-     <li><a href='../module/mbd_scs.html'>mbd_scs</a></li>
+     <li><a href='../module/mbd_ts.html'>mbd_ts</a></li>
     
   
-     <li class="active">run_scs</li>
+     <li class="active">get_ts_energy_num_grad</li>
   </ol>
 </div>
 </div>
@@ -195,7 +195,7 @@
     
     <div class="col-md-9" id='text'>
     <h2>
-public function run_scs(geom, alpha, damp, dalpha_scs, grad) result(alpha_scs)
+public function get_ts_energy_num_grad(geom, alpha_0, C6, damp, grad) result(res)
     
     
    
@@ -205,31 +205,7 @@ public function run_scs(geom, alpha, damp, dalpha_scs, grad) result(alpha_scs)
 
 
     
-    <p>
-<script type="math/tex; mode=display">
- \begin{gathered}
- \bar\alpha_i=\tfrac13\operatorname{Tr}
- \big(\textstyle\sum_j\boldsymbol{\bar\alpha}_{ij}\big),\qquad
- \boldsymbol{\bar\alpha}=(\boldsymbol\alpha^{-1}+\mathbf T_\text{GG})^{-1}
- \\ \partial\boldsymbol{\bar\alpha}=
- -\boldsymbol{\bar\alpha}(
- \partial\boldsymbol\alpha^{-1}+\partial\mathbf T_\text{GG}
- )\boldsymbol{\bar\alpha},\qquad
- \frac{\partial\bar\alpha_i}{\partial X_j}=
- -\frac13\sum_{\zeta\eta}\big(
- B_{i\zeta,j\eta}\bar\alpha'_{\zeta,j\eta}+
- B'_{j\eta,\zeta}\bar\alpha_{j\eta,i\zeta}
- \big)
- \\ \mathbf B=\boldsymbol{\bar\alpha}\mathbf A,
- \quad A_{i\zeta,j\eta}=
- \frac{\partial(\alpha_i^{-1})}{\partial X_i}
- \delta_{ij}\delta_{\zeta\eta}+
- \frac{\partial T^\text{GG}_{i\zeta,j\eta}}{\partial X_i},\quad
- \bar\alpha'_{\zeta,p}=\sum_i\bar\alpha_{i\zeta,p},\quad
- B'_{p,\zeta}=\sum_iB_{p,i\zeta}
- \end{gathered}
- </script>
-</p>
+    <p>Get TS energy and numerical gradients.</p>
     
 
     <h3>Arguments</h3>
@@ -250,7 +226,7 @@ public function run_scs(geom, alpha, damp, dalpha_scs, grad) result(alpha_scs)
   
 <tr>
   
-  <td><span class="anchor" id="variable-geom~5"></span>type(<a href='../type/geom_t.html'>geom_t</a>),</td>
+  <td><span class="anchor" id="variable-geom"></span>type(<a href='../type/geom_t.html'>geom_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -265,12 +241,12 @@ public function run_scs(geom, alpha, damp, dalpha_scs, grad) result(alpha_scs)
   
 <tr>
   
-  <td><span class="anchor" id="variable-alpha~5"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-alpha_0"></span>real(kind=dp),</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
-  <td><strong>alpha</strong>(:)</td><td></td>
+  <td><strong>alpha_0</strong>(:)</td><td></td>
   
 </tr>
 
@@ -280,7 +256,22 @@ public function run_scs(geom, alpha, damp, dalpha_scs, grad) result(alpha_scs)
   
 <tr>
   
-  <td><span class="anchor" id="variable-damp~5"></span>type(<a href='../type/damping_t.html'>damping_t</a>),</td>
+  <td><span class="anchor" id="variable-c6"></span>real(kind=dp),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>C6</strong>(:)</td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-damp"></span>type(<a href='../type/damping_t.html'>damping_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -295,22 +286,7 @@ public function run_scs(geom, alpha, damp, dalpha_scs, grad) result(alpha_scs)
   
 <tr>
   
-  <td><span class="anchor" id="variable-dalpha_scs"></span>type(<a href='../type/grad_t.html'>grad_t</a>),</td>
-  <td>intent(out)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>dalpha_scs</strong>(:)</td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" id="variable-grad~15"></span>type(<a href='../type/grad_request_t.html'>grad_request_t</a>),</td>
+  <td><span class="anchor" id="variable-grad"></span>type(<a href='../type/grad_request_t.html'>grad_request_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -329,8 +305,8 @@ public function run_scs(geom, alpha, damp, dalpha_scs, grad) result(alpha_scs)
     
     
     
-   <h3>Return Value <small><span class="anchor" id="variable-alpha_scs"></span>real(kind=dp)
-  (size(alpha))</small></h3>
+   <h3>Return Value <small><span class="anchor" id="variable-res"></span>type(<a href='../type/result_t.html'>result_t</a>)
+  </small></h3>
     
     
     

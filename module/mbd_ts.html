@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 3.3% of total for modules and submodules.">83 statements</a>
+    title=" 5.1% of total for modules and submodules.">129 statements</a>
      </li> 
      
      
@@ -181,7 +181,9 @@
   <div id="funcs-0" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../module/mbd_ts.html#proc-ts_energy">ts_energy</a>
+      <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy_num_grad">get_ts_energy_num_grad</a>
+      
+      <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy">get_ts_energy</a>
       
     </div>
   </div>
@@ -223,6 +225,8 @@
     
     <li><a href='../module/mbd_geom.html'>mbd_geom</a></li>
     
+    <li><a href='../module/mbd_gradients.html'>mbd_gradients</a></li>
+    
   </ul>
       </li>
       
@@ -259,7 +263,9 @@
   <div id="funcs-1" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../module/mbd_ts.html#proc-ts_energy">ts_energy</a>
+      <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy_num_grad">get_ts_energy_num_grad</a>
+      
+      <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy">get_ts_energy</a>
       
     </div>
   </div>
@@ -296,8 +302,136 @@
     
     
   <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-ts_energy"></span><h3>
-public function <a href='../proc/ts_energy.html'>ts_energy</a>(geom, alpha_0, C6, damp) result(ene)
+  <div class="panel-heading codesum"><span class="anchor" id="proc-get_ts_energy_num_grad"></span><h3>
+public function <a href='../proc/get_ts_energy_num_grad.html'>get_ts_energy_num_grad</a>(geom, alpha_0, C6, damp, grad) result(res)
+    
+    
+   
+</h3></div>
+  <div class="panel-body">
+       
+    
+
+
+
+
+
+
+
+<p>Get TS energy and numerical gradients.</p>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/geom_t.html'>geom_t</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>geom</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=dp),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>alpha_0</strong>(:)</td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=dp),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>C6</strong>(:)</td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/damping_t.html'>damping_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>damp</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>type(<a href='../type/grad_request_t.html'>grad_request_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>grad</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+  
+  
+  
+  
+     <h4>Return Value <small>type(<a href='../type/result_t.html'>result_t</a>)
+  </small></h4>
+  
+    
+
+  </div>
+  </div>
+
+    
+    
+  <div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="proc-get_ts_energy"></span><h3>
+public function <a href='../proc/get_ts_energy.html'>get_ts_energy</a>(geom, alpha_0, C6, damp) result(ene)
     
     
    
