@@ -294,88 +294,86 @@
 <a name="ln-29"></a>
 <a name="ln-30"></a><span class="k">contains</span>
 <a name="ln-31"></a>
-<a name="ln-32"></a><span class="cp">#   define DO_COMPLEX_TYPE 0</span>
-<a name="ln-33"></a><span class="cp">#endif</span>
-<a name="ln-34"></a>
-<a name="ln-35"></a><span class="cp">#if DO_COMPLEX_TYPE == 0</span>
-<a name="ln-36"></a><span class="k">subroutine </span><span class="n">elsi_eigh_real</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">vals_only</span><span class="p">)</span>
-<a name="ln-37"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-38"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">src</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-39"></a><span class="cp">#elif DO_COMPLEX_TYPE == 1</span>
-<a name="ln-40"></a><span class="k">subroutine </span><span class="n">elsi_eigh_complex</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">vals_only</span><span class="p">)</span>
-<a name="ln-41"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-42"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">src</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-43"></a><span class="cp">#endif</span>
-<a name="ln-44"></a>    <span class="k">type</span><span class="p">(</span><span class="n">blacs_desc_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">blacs_desc</span>
-<a name="ln-45"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">eigs</span><span class="p">(:)</span>
-<a name="ln-46"></a>    <span class="k">type</span><span class="p">(</span><span class="n">exception_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">exc</span>
-<a name="ln-47"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">vals_only</span>
-<a name="ln-48"></a>
-<a name="ln-49"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">n_vecs</span><span class="p">,</span> <span class="n">n</span>
-<a name="ln-50"></a>    <span class="k">type</span><span class="p">(</span><span class="n">elsi_handle</span><span class="p">)</span> <span class="kd">::</span> <span class="n">handle</span>
-<a name="ln-51"></a><span class="cp">#if DO_COMPLEX_TYPE == 0</span>
-<a name="ln-52"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">DUMMY_MATRIX</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<a name="ln-53"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">vecs</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-54"></a><span class="cp">#elif DO_COMPLEX_TYPE == 1</span>
-<a name="ln-55"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">DUMMY_MATRIX</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<a name="ln-56"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">vecs</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-57"></a><span class="cp">#endif</span>
-<a name="ln-58"></a>
-<a name="ln-59"></a>    <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span>
-<a name="ln-60"></a>    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">src</span><span class="p">))</span> <span class="n">A</span> <span class="o">=</span> <span class="n">src</span>
-<a name="ln-61"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">is_true</span><span class="p">(</span><span class="n">vals_only</span><span class="p">))</span> <span class="k">then</span>
-<a name="ln-62"></a><span class="k">        </span><span class="n">n_vecs</span> <span class="o">=</span> <span class="mi">0</span>
-<a name="ln-63"></a>    <span class="k">else</span>
-<a name="ln-64"></a><span class="k">        </span><span class="n">n_vecs</span> <span class="o">=</span> <span class="n">n</span>
-<a name="ln-65"></a>    <span class="k">end if</span>
-<a name="ln-66"></a><span class="k">    call </span><span class="n">elsi_init</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="n">n_vecs</span><span class="p">)</span>
-<a name="ln-67"></a>    <span class="k">call </span><span class="n">elsi_set_mpi</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">comm</span><span class="p">)</span>
-<a name="ln-68"></a>    <span class="k">call </span><span class="n">elsi_set_blacs</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">ctx</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">blocksize</span><span class="p">)</span>
-<a name="ln-69"></a>    <span class="k">call </span><span class="n">elsi_set_unit_ovlp</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<a name="ln-70"></a>    <span class="k">allocate</span> <span class="p">(</span><span class="n">vecs</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
-<a name="ln-71"></a><span class="cp">#if DO_COMPLEX_TYPE == 0</span>
-<a name="ln-72"></a>    <span class="k">call </span><span class="n">elsi_ev_real</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">DUMMY_MATRIX</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">vecs</span><span class="p">)</span>
-<a name="ln-73"></a><span class="cp">#elif DO_COMPLEX_TYPE == 1</span>
-<a name="ln-74"></a>    <span class="k">call </span><span class="n">elsi_ev_complex</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">DUMMY_MATRIX</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">vecs</span><span class="p">)</span>
-<a name="ln-75"></a><span class="cp">#endif</span>
-<a name="ln-76"></a>    <span class="n">A</span> <span class="o">=</span> <span class="n">vecs</span>
-<a name="ln-77"></a>    <span class="k">call </span><span class="n">elsi_finalize</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
-<a name="ln-78"></a><span class="k">end subroutine</span>
-<a name="ln-79"></a>
-<a name="ln-80"></a><span class="cp">#if DO_COMPLEX_TYPE == 0</span>
-<a name="ln-81"></a><span class="k">function </span><span class="n">elsi_eigvalsh_real</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">destroy</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">eigs</span><span class="p">)</span>
-<a name="ln-82"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-83"></a><span class="cp">#elif DO_COMPLEX_TYPE == 1</span>
-<a name="ln-84"></a><span class="k">function </span><span class="n">elsi_eigvalsh_complex</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">destroy</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">eigs</span><span class="p">)</span>
-<a name="ln-85"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-86"></a><span class="cp">#endif</span>
-<a name="ln-87"></a>    <span class="k">type</span><span class="p">(</span><span class="n">blacs_desc_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">blacs_desc</span>
-<a name="ln-88"></a>    <span class="k">type</span><span class="p">(</span><span class="n">exception_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">exc</span>
-<a name="ln-89"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">destroy</span>
-<a name="ln-90"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">eigs</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span><span class="p">)</span>
-<a name="ln-91"></a>
-<a name="ln-92"></a><span class="cp">#if DO_COMPLEX_TYPE == 0</span>
-<a name="ln-93"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">A_</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-94"></a><span class="cp">#elif DO_COMPLEX_TYPE == 1</span>
-<a name="ln-95"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">A_</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-96"></a><span class="cp">#endif</span>
-<a name="ln-97"></a>
-<a name="ln-98"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">is_true</span><span class="p">(</span><span class="n">destroy</span><span class="p">))</span> <span class="k">then</span>
-<a name="ln-99"></a><span class="k">        call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_</span><span class="p">)</span>
-<a name="ln-100"></a>    <span class="k">else</span>
-<a name="ln-101"></a><span class="k">        </span><span class="n">A_</span> <span class="o">=</span> <span class="n">A</span>
-<a name="ln-102"></a>    <span class="k">end if</span>
-<a name="ln-103"></a><span class="k">    call </span><span class="n">elsi_eigh</span><span class="p">(</span><span class="n">A_</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">vals_only</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
-<a name="ln-104"></a><span class="k">end function</span>
-<a name="ln-105"></a>
-<a name="ln-106"></a><span class="cp">#if DO_COMPLEX_TYPE == 0</span>
-<a name="ln-107"></a><span class="cp">#   undef DO_COMPLEX_TYPE</span>
-<a name="ln-108"></a><span class="cp">#   define DO_COMPLEX_TYPE 1</span>
-<a name="ln-109"></a><span class="cp">#   include &quot;mbd_elsi.F90&quot;</span>
+<a name="ln-32"></a><span class="cp">#endif</span>
+<a name="ln-33"></a>
+<a name="ln-34"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
+<a name="ln-35"></a><span class="k">subroutine </span><span class="n">elsi_eigh_real</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">vals_only</span><span class="p">)</span>
+<a name="ln-36"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-37"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">src</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-38"></a><span class="cp">#else</span>
+<a name="ln-39"></a><span class="k">subroutine </span><span class="n">elsi_eigh_complex</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">src</span><span class="p">,</span> <span class="n">vals_only</span><span class="p">)</span>
+<a name="ln-40"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-41"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">src</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-42"></a><span class="cp">#endif</span>
+<a name="ln-43"></a>    <span class="k">type</span><span class="p">(</span><span class="n">blacs_desc_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">blacs_desc</span>
+<a name="ln-44"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">)</span> <span class="kd">::</span> <span class="n">eigs</span><span class="p">(:)</span>
+<a name="ln-45"></a>    <span class="k">type</span><span class="p">(</span><span class="n">exception_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">exc</span>
+<a name="ln-46"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">vals_only</span>
+<a name="ln-47"></a>
+<a name="ln-48"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">n_vecs</span><span class="p">,</span> <span class="n">n</span>
+<a name="ln-49"></a>    <span class="k">type</span><span class="p">(</span><span class="n">elsi_handle</span><span class="p">)</span> <span class="kd">::</span> <span class="n">handle</span>
+<a name="ln-50"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
+<a name="ln-51"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">DUMMY_MATRIX</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="ln-52"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">vecs</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-53"></a><span class="cp">#else</span>
+<a name="ln-54"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">DUMMY_MATRIX</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="ln-55"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">vecs</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-56"></a><span class="cp">#endif</span>
+<a name="ln-57"></a>
+<a name="ln-58"></a>    <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span>
+<a name="ln-59"></a>    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">src</span><span class="p">))</span> <span class="n">A</span> <span class="o">=</span> <span class="n">src</span>
+<a name="ln-60"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">is_true</span><span class="p">(</span><span class="n">vals_only</span><span class="p">))</span> <span class="k">then</span>
+<a name="ln-61"></a><span class="k">        </span><span class="n">n_vecs</span> <span class="o">=</span> <span class="mi">0</span>
+<a name="ln-62"></a>    <span class="k">else</span>
+<a name="ln-63"></a><span class="k">        </span><span class="n">n_vecs</span> <span class="o">=</span> <span class="n">n</span>
+<a name="ln-64"></a>    <span class="k">end if</span>
+<a name="ln-65"></a><span class="k">    call </span><span class="n">elsi_init</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">n</span><span class="p">,</span> <span class="mi">0</span><span class="n">d0</span><span class="p">,</span> <span class="n">n_vecs</span><span class="p">)</span>
+<a name="ln-66"></a>    <span class="k">call </span><span class="n">elsi_set_mpi</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">comm</span><span class="p">)</span>
+<a name="ln-67"></a>    <span class="k">call </span><span class="n">elsi_set_blacs</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">ctx</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">blocksize</span><span class="p">)</span>
+<a name="ln-68"></a>    <span class="k">call </span><span class="n">elsi_set_unit_ovlp</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="ln-69"></a>    <span class="k">allocate</span> <span class="p">(</span><span class="n">vecs</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">1</span><span class="p">),</span> <span class="n">size</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="mi">2</span><span class="p">)))</span>
+<a name="ln-70"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
+<a name="ln-71"></a>    <span class="k">call </span><span class="n">elsi_ev_real</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">DUMMY_MATRIX</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">vecs</span><span class="p">)</span>
+<a name="ln-72"></a><span class="cp">#else</span>
+<a name="ln-73"></a>    <span class="k">call </span><span class="n">elsi_ev_complex</span><span class="p">(</span><span class="n">handle</span><span class="p">,</span> <span class="n">A</span><span class="p">,</span> <span class="n">DUMMY_MATRIX</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">vecs</span><span class="p">)</span>
+<a name="ln-74"></a><span class="cp">#endif</span>
+<a name="ln-75"></a>    <span class="n">A</span> <span class="o">=</span> <span class="n">vecs</span>
+<a name="ln-76"></a>    <span class="k">call </span><span class="n">elsi_finalize</span><span class="p">(</span><span class="n">handle</span><span class="p">)</span>
+<a name="ln-77"></a><span class="k">end subroutine</span>
+<a name="ln-78"></a>
+<a name="ln-79"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
+<a name="ln-80"></a><span class="k">function </span><span class="n">elsi_eigvalsh_real</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">destroy</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">eigs</span><span class="p">)</span>
+<a name="ln-81"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-82"></a><span class="cp">#else</span>
+<a name="ln-83"></a><span class="k">function </span><span class="n">elsi_eigvalsh_complex</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">destroy</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">eigs</span><span class="p">)</span>
+<a name="ln-84"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">A</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-85"></a><span class="cp">#endif</span>
+<a name="ln-86"></a>    <span class="k">type</span><span class="p">(</span><span class="n">blacs_desc_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">blacs_desc</span>
+<a name="ln-87"></a>    <span class="k">type</span><span class="p">(</span><span class="n">exception_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">exc</span>
+<a name="ln-88"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">destroy</span>
+<a name="ln-89"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">eigs</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span><span class="p">)</span>
+<a name="ln-90"></a>
+<a name="ln-91"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
+<a name="ln-92"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">A_</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-93"></a><span class="cp">#else</span>
+<a name="ln-94"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">A_</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-95"></a><span class="cp">#endif</span>
+<a name="ln-96"></a>
+<a name="ln-97"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">is_true</span><span class="p">(</span><span class="n">destroy</span><span class="p">))</span> <span class="k">then</span>
+<a name="ln-98"></a><span class="k">        call </span><span class="nb">move_alloc</span><span class="p">(</span><span class="n">A</span><span class="p">,</span> <span class="n">A_</span><span class="p">)</span>
+<a name="ln-99"></a>    <span class="k">else</span>
+<a name="ln-100"></a><span class="k">        </span><span class="n">A_</span> <span class="o">=</span> <span class="n">A</span>
+<a name="ln-101"></a>    <span class="k">end if</span>
+<a name="ln-102"></a><span class="k">    call </span><span class="n">elsi_eigh</span><span class="p">(</span><span class="n">A_</span><span class="p">,</span> <span class="n">blacs_desc</span><span class="p">,</span> <span class="n">eigs</span><span class="p">,</span> <span class="n">exc</span><span class="p">,</span> <span class="n">vals_only</span><span class="o">=</span><span class="p">.</span><span class="n">true</span><span class="p">.)</span>
+<a name="ln-103"></a><span class="k">end function</span>
+<a name="ln-104"></a>
+<a name="ln-105"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
+<a name="ln-106"></a><span class="cp">#   define DO_COMPLEX_TYPE</span>
+<a name="ln-107"></a><span class="cp">#   include &quot;mbd_elsi.F90&quot;</span>
+<a name="ln-108"></a>
+<a name="ln-109"></a><span class="k">end module</span>
 <a name="ln-110"></a>
-<a name="ln-111"></a><span class="k">end module</span>
-<a name="ln-112"></a>
-<a name="ln-113"></a><span class="cp">#endif</span>
+<a name="ln-111"></a><span class="cp">#endif</span>
 </pre></div>
 
     </section>
