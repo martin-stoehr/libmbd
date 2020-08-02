@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 9.3% of total for source files.">234 statements</a>
+    title=" 9.2% of total for source files.">234 statements</a>
      </li> 
      
      
@@ -440,40 +440,40 @@
 <a name="ln-175"></a><span class="k">        </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">lattice</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">lattice_vectors</span>
 <a name="ln-176"></a>    <span class="k">end if</span>
 <a name="ln-177"></a><span class="k">    </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">parallel_mode</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">parallel_mode</span>
-<a name="ln-178"></a>    <span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
-<a name="ln-179"></a>    <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">free_values</span><span class="p">))</span> <span class="k">then</span>
-<a name="ln-180"></a><span class="k">        </span><span class="n">this</span><span class="p">%</span><span class="n">free_values</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">free_values</span>
-<a name="ln-181"></a>    <span class="k">else</span>
-<a name="ln-182"></a><span class="k">        select case</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">vdw_params_kind</span><span class="p">)</span>
-<a name="ln-183"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;ts&#39;</span><span class="p">)</span>
-<a name="ln-184"></a>            <span class="n">this</span><span class="p">%</span><span class="n">free_values</span> <span class="o">=</span> <span class="n">ts_vdw_params</span><span class="p">(:,</span> <span class="n">species_index</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">atom_types</span><span class="p">))</span>
-<a name="ln-185"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;tssurf&#39;</span><span class="p">)</span>
-<a name="ln-186"></a>            <span class="n">this</span><span class="p">%</span><span class="n">free_values</span> <span class="o">=</span> <span class="n">tssurf_vdw_params</span><span class="p">(:,</span> <span class="n">species_index</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">atom_types</span><span class="p">))</span>
-<a name="ln-187"></a>        <span class="k">end select</span>
-<a name="ln-188"></a><span class="k">    end if</span>
-<a name="ln-189"></a><span class="k">    if</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">xc</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">then</span>
-<a name="ln-190"></a><span class="k">        </span><span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">beta</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">mbd_beta</span>
-<a name="ln-191"></a>        <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">a</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">mbd_a</span>
-<a name="ln-192"></a>        <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">ts_d</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">ts_d</span>
-<a name="ln-193"></a>        <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">ts_sr</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">ts_sr</span>
-<a name="ln-194"></a>        <span class="k">select case</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">method</span><span class="p">)</span>
-<a name="ln-195"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;ts&#39;</span><span class="p">)</span>
-<a name="ln-196"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">ts_sr</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<a name="ln-197"></a><span class="k">                </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">code</span> <span class="o">=</span> <span class="n">MBD_EXC_DAMPING</span>
-<a name="ln-198"></a>                <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Damping parameter S_r for TS not specified&#39;</span>
-<a name="ln-199"></a>            <span class="k">end if</span>
-<a name="ln-200"></a><span class="k">        case </span><span class="n">default</span>
-<a name="ln-201"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">mbd_beta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
-<a name="ln-202"></a><span class="k">                </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">code</span> <span class="o">=</span> <span class="n">MBD_EXC_DAMPING</span>
-<a name="ln-203"></a>                <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Damping parameter beta for MBD not specified&#39;</span>
-<a name="ln-204"></a>            <span class="k">end if</span>
-<a name="ln-205"></a><span class="k">        end select</span>
-<a name="ln-206"></a><span class="k">    else</span>
-<a name="ln-207"></a><span class="k">        </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span> <span class="o">=</span> <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">set_params_from_xc</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">xc</span><span class="p">,</span> <span class="n">input</span><span class="p">%</span><span class="n">method</span><span class="p">)</span>
-<a name="ln-208"></a>    <span class="k">end if</span>
-<a name="ln-209"></a><span class="k">    if</span> <span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">has_exc</span><span class="p">())</span> <span class="k">return</span>
-<a name="ln-210"></a><span class="k">    if</span> <span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">printer</span><span class="p">))</span> <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="nb">log</span><span class="p">%</span><span class="n">printer</span> <span class="o">=&gt;</span> <span class="n">input</span><span class="p">%</span><span class="n">printer</span>
-<a name="ln-211"></a>    <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="nb">log</span><span class="p">%</span><span class="n">level</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">log_level</span>
+<a name="ln-178"></a>    <span class="k">if</span> <span class="p">(</span><span class="nb">associated</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">printer</span><span class="p">))</span> <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="nb">log</span><span class="p">%</span><span class="n">printer</span> <span class="o">=&gt;</span> <span class="n">input</span><span class="p">%</span><span class="n">printer</span>
+<a name="ln-179"></a>    <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="nb">log</span><span class="p">%</span><span class="n">level</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">log_level</span>
+<a name="ln-180"></a>    <span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">init</span><span class="p">()</span>
+<a name="ln-181"></a>    <span class="k">if</span> <span class="p">(</span><span class="nb">allocated</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">free_values</span><span class="p">))</span> <span class="k">then</span>
+<a name="ln-182"></a><span class="k">        </span><span class="n">this</span><span class="p">%</span><span class="n">free_values</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">free_values</span>
+<a name="ln-183"></a>    <span class="k">else</span>
+<a name="ln-184"></a><span class="k">        select case</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">vdw_params_kind</span><span class="p">)</span>
+<a name="ln-185"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;ts&#39;</span><span class="p">)</span>
+<a name="ln-186"></a>            <span class="n">this</span><span class="p">%</span><span class="n">free_values</span> <span class="o">=</span> <span class="n">ts_vdw_params</span><span class="p">(:,</span> <span class="n">species_index</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">atom_types</span><span class="p">))</span>
+<a name="ln-187"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;tssurf&#39;</span><span class="p">)</span>
+<a name="ln-188"></a>            <span class="n">this</span><span class="p">%</span><span class="n">free_values</span> <span class="o">=</span> <span class="n">tssurf_vdw_params</span><span class="p">(:,</span> <span class="n">species_index</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">atom_types</span><span class="p">))</span>
+<a name="ln-189"></a>        <span class="k">end select</span>
+<a name="ln-190"></a><span class="k">    end if</span>
+<a name="ln-191"></a><span class="k">    if</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">xc</span> <span class="o">==</span> <span class="s1">&#39;&#39;</span><span class="p">)</span> <span class="k">then</span>
+<a name="ln-192"></a><span class="k">        </span><span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">beta</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">mbd_beta</span>
+<a name="ln-193"></a>        <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">a</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">mbd_a</span>
+<a name="ln-194"></a>        <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">ts_d</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">ts_d</span>
+<a name="ln-195"></a>        <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">ts_sr</span> <span class="o">=</span> <span class="n">input</span><span class="p">%</span><span class="n">ts_sr</span>
+<a name="ln-196"></a>        <span class="k">select case</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">method</span><span class="p">)</span>
+<a name="ln-197"></a>        <span class="k">case</span> <span class="p">(</span><span class="s1">&#39;ts&#39;</span><span class="p">)</span>
+<a name="ln-198"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">ts_sr</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<a name="ln-199"></a><span class="k">                </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">code</span> <span class="o">=</span> <span class="n">MBD_EXC_DAMPING</span>
+<a name="ln-200"></a>                <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Damping parameter S_r for TS not specified&#39;</span>
+<a name="ln-201"></a>            <span class="k">end if</span>
+<a name="ln-202"></a><span class="k">        case </span><span class="n">default</span>
+<a name="ln-203"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">mbd_beta</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">)</span> <span class="k">then</span>
+<a name="ln-204"></a><span class="k">                </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">code</span> <span class="o">=</span> <span class="n">MBD_EXC_DAMPING</span>
+<a name="ln-205"></a>                <span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span><span class="p">%</span><span class="n">msg</span> <span class="o">=</span> <span class="s1">&#39;Damping parameter beta for MBD not specified&#39;</span>
+<a name="ln-206"></a>            <span class="k">end if</span>
+<a name="ln-207"></a><span class="k">        end select</span>
+<a name="ln-208"></a><span class="k">    else</span>
+<a name="ln-209"></a><span class="k">        </span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">exc</span> <span class="o">=</span> <span class="n">this</span><span class="p">%</span><span class="n">damp</span><span class="p">%</span><span class="n">set_params_from_xc</span><span class="p">(</span><span class="n">input</span><span class="p">%</span><span class="n">xc</span><span class="p">,</span> <span class="n">input</span><span class="p">%</span><span class="n">method</span><span class="p">)</span>
+<a name="ln-210"></a>    <span class="k">end if</span>
+<a name="ln-211"></a><span class="k">    if</span> <span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">geom</span><span class="p">%</span><span class="n">has_exc</span><span class="p">())</span> <span class="k">return</span>
 <a name="ln-212"></a><span class="k">end subroutine</span>
 <a name="ln-213"></a>
 <a name="ln-214"></a><span class="k">subroutine </span><span class="n">mbd_calc_destroy</span><span class="p">(</span><span class="n">this</span><span class="p">)</span>
