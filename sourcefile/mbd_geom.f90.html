@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 9.1% of total for source files.">231 statements</a>
+    title=" 9.2% of total for source files.">231 statements</a>
      </li> 
      
      
@@ -457,7 +457,7 @@
 <a name="ln-192"></a>        <span class="n">this</span><span class="p">%</span><span class="n">idx</span><span class="p">%</span><span class="n">j_atom</span> <span class="o">=</span> <span class="n">this</span><span class="p">%</span><span class="n">idx</span><span class="p">%</span><span class="n">i_atom</span>
 <a name="ln-193"></a>    <span class="k">end if</span>
 <a name="ln-194"></a><span class="k">    </span><span class="n">this</span><span class="p">%</span><span class="n">idx</span><span class="p">%</span><span class="n">n_atoms</span> <span class="o">=</span> <span class="n">this</span><span class="p">%</span><span class="n">siz</span><span class="p">()</span>
-<a name="ln-195"></a>    <span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="nb">log</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Will user parallel mode: &#39;</span> <span class="o">//</span> <span class="n">this</span><span class="p">%</span><span class="n">parallel_mode</span><span class="p">)</span>
+<a name="ln-195"></a>    <span class="k">call </span><span class="n">this</span><span class="p">%</span><span class="nb">log</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;Will use parallel mode: &#39;</span> <span class="o">//</span> <span class="n">this</span><span class="p">%</span><span class="n">parallel_mode</span><span class="p">)</span>
 <a name="ln-196"></a><span class="cp">#ifdef WITH_SCALAPACK</span>
 <a name="ln-197"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">idx</span><span class="p">%</span><span class="n">parallel</span><span class="p">)</span> <span class="k">then</span>
 <a name="ln-198"></a><span class="k">        call </span><span class="n">this</span><span class="p">%</span><span class="nb">log</span><span class="p">%</span><span class="n">info</span><span class="p">(</span><span class="s1">&#39;BLACS block size: &#39;</span> <span class="o">//</span> <span class="n">tostr</span><span class="p">(</span><span class="n">this</span><span class="p">%</span><span class="n">blacs</span><span class="p">%</span><span class="n">blocksize</span><span class="p">))</span>
