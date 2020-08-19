@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>pymbd.fortran &#8212; Libmbd 0.9.3 documentation</title>
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
@@ -215,9 +215,10 @@
         <span class="bp">self</span><span class="p">,</span>
         <span class="n">alpha_0</span><span class="p">,</span>
         <span class="n">C6</span><span class="p">,</span>
-        <span class="n">R_vdw</span><span class="p">,</span>
-        <span class="n">beta</span><span class="p">,</span>
+        <span class="n">R_vdw</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+        <span class="n">beta</span><span class="o">=</span><span class="mf">0.0</span><span class="p">,</span>
         <span class="n">a</span><span class="o">=</span><span class="mf">6.0</span><span class="p">,</span>
+        <span class="n">sigma</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
         <span class="n">damping</span><span class="o">=</span><span class="s1">&#39;fermi,dip&#39;</span><span class="p">,</span>
         <span class="n">variant</span><span class="o">=</span><span class="s1">&#39;rsscs&#39;</span><span class="p">,</span>
         <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
@@ -227,16 +228,22 @@
 <span class="sd">        :param array-like alpha_0: (a.u.) atomic polarizabilities</span>
 <span class="sd">        :param array-like C6: (a.u.) atomic :math:`C_6` coefficients</span>
 <span class="sd">        :param array-like R_vdw: (a.u.) atomic vdW radii</span>
+<span class="sd">        :param array-like sigma: (a.u.) oscillator widths</span>
 <span class="sd">        :param float beta: MBD damping parameter :math:`\beta`</span>
 <span class="sd">        :param float a: MBD damping parameter :math:`a`</span>
 <span class="sd">        :param damping str: type of damping</span>
 <span class="sd">        :param variant str: one of &#39;plain&#39;, &#39;scs&#39;, &#39;rsscs&#39;</span>
 <span class="sd">        :param force bool: if True, calculate energy gradients</span>
 <span class="sd">        &quot;&quot;&quot;</span>
-        <span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">_array</span><span class="p">,</span> <span class="p">(</span><span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">))</span>
+        <span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">,</span> <span class="n">sigma</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">_array</span><span class="p">,</span> <span class="p">(</span><span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">,</span> <span class="n">sigma</span><span class="p">))</span>
         <span class="n">n_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">damping_f</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_init_damping</span><span class="p">(</span>
-            <span class="n">n_atoms</span><span class="p">,</span> <span class="n">damping</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">),</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">beta</span><span class="p">,</span> <span class="n">a</span>
+            <span class="n">n_atoms</span><span class="p">,</span>
+            <span class="n">damping</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span>
+            <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">),</span>
+            <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">sigma</span><span class="p">),</span>
+            <span class="n">beta</span><span class="p">,</span>
+            <span class="n">a</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">args</span> <span class="o">=</span> <span class="p">(</span>
             <span class="bp">self</span><span class="o">.</span><span class="n">_geom_f</span><span class="p">,</span>
@@ -474,7 +481,7 @@
       &copy;2018-2020, Jan Hermann.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
     </div>

@@ -4,7 +4,7 @@
 <html>
   <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>API &#8212; Libmbd 0.9.3 documentation</title>
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -144,7 +144,7 @@
 
 <dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.mbd_energy">
-<code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span></em>, <em class="sig-param"><span class="n">beta</span></em>, <em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">6.0</span></em>, <em class="sig-param"><span class="n">damping</span><span class="o">=</span><span class="default_value">'fermi,dip'</span></em>, <em class="sig-param"><span class="n">variant</span><span class="o">=</span><span class="default_value">'rsscs'</span></em>, <em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">mbd_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">beta</span><span class="o">=</span><span class="default_value">0.0</span></em>, <em class="sig-param"><span class="n">a</span><span class="o">=</span><span class="default_value">6.0</span></em>, <em class="sig-param"><span class="n">sigma</span><span class="o">=</span><span class="default_value">None</span></em>, <em class="sig-param"><span class="n">damping</span><span class="o">=</span><span class="default_value">'fermi,dip'</span></em>, <em class="sig-param"><span class="n">variant</span><span class="o">=</span><span class="default_value">'rsscs'</span></em>, <em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.mbd_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.mbd_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate an MBD energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -152,6 +152,7 @@
 <li><p><strong>alpha_0</strong> (<em>array-like</em>) – (a.u.) atomic polarizabilities</p></li>
 <li><p><strong>C6</strong> (<em>array-like</em>) – (a.u.) atomic <span class="math notranslate nohighlight">\(C_6\)</span> coefficients</p></li>
 <li><p><strong>R_vdw</strong> (<em>array-like</em>) – (a.u.) atomic vdW radii</p></li>
+<li><p><strong>sigma</strong> (<em>array-like</em>) – (a.u.) oscillator widths</p></li>
 <li><p><strong>beta</strong> (<em>float</em>) – MBD damping parameter <span class="math notranslate nohighlight">\(\beta\)</span></p></li>
 <li><p><strong>a</strong> (<em>float</em>) – MBD damping parameter <span class="math notranslate nohighlight">\(a\)</span></p></li>
 <li><p><strong>str</strong> (<em>variant</em>) – type of damping</p></li>
@@ -315,7 +316,7 @@ molecule and vacuum</p></li>
       &copy;2018-2020, Jan Hermann.
       
       |
-      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.1.2</a>
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 3.2.1</a>
       &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.12</a>
       
       |
