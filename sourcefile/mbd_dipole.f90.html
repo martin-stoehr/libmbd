@@ -272,15 +272,15 @@
 <a name="ln-7"></a><span class="c">!! Construction of dipole tensors and dipole matrices.</span>
 <a name="ln-8"></a>
 <a name="ln-9"></a><span class="k">use </span><span class="n">mbd_constants</span>
-<a name="ln-10"></a><span class="k">use </span><span class="n">mbd_matrix</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">matrix_re_t</span><span class="p">,</span> <span class="n">matrix_cplx_t</span>
-<a name="ln-11"></a><span class="k">use </span><span class="n">mbd_geom</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">geom_t</span><span class="p">,</span> <span class="n">supercell_circum</span>
-<a name="ln-12"></a><span class="k">use </span><span class="n">mbd_damping</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">damping_t</span><span class="p">,</span> <span class="n">damping_fermi</span><span class="p">,</span> <span class="n">damping_sqrtfermi</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-10"></a><span class="k">use </span><span class="n">mbd_matrix</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">matrix_re_t</span><span class="p">,</span> <span class="n">matrix_cplx_t</span>
+<a name="ln-11"></a><span class="k">use </span><span class="n">mbd_geom</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">geom_t</span><span class="p">,</span> <span class="n">supercell_circum</span>
+<a name="ln-12"></a><span class="k">use </span><span class="n">mbd_damping</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">damping_t</span><span class="p">,</span> <span class="n">damping_fermi</span><span class="p">,</span> <span class="n">damping_sqrtfermi</span><span class="p">,</span> <span class="p">&amp;</span>
 <a name="ln-13"></a>    <span class="n">op1minus_grad</span>
-<a name="ln-14"></a><span class="k">use </span><span class="n">mbd_gradients</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">grad_t</span><span class="p">,</span> <span class="n">grad_matrix_re_t</span><span class="p">,</span> <span class="n">grad_matrix_cplx_t</span><span class="p">,</span> <span class="p">&amp;</span>
+<a name="ln-14"></a><span class="k">use </span><span class="n">mbd_gradients</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">grad_t</span><span class="p">,</span> <span class="n">grad_matrix_re_t</span><span class="p">,</span> <span class="n">grad_matrix_cplx_t</span><span class="p">,</span> <span class="p">&amp;</span>
 <a name="ln-15"></a>    <span class="n">grad_scalar_t</span><span class="p">,</span> <span class="n">grad_request_t</span>
-<a name="ln-16"></a><span class="k">use </span><span class="n">mbd_lapack</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">eigvals</span><span class="p">,</span> <span class="n">inverse</span>
-<a name="ln-17"></a><span class="k">use </span><span class="n">mbd_linalg</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">outer</span>
-<a name="ln-18"></a><span class="k">use </span><span class="n">mbd_utils</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">tostr</span><span class="p">,</span> <span class="n">shift_idx</span>
+<a name="ln-16"></a><span class="k">use </span><span class="n">mbd_lapack</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">eigvals</span><span class="p">,</span> <span class="n">inverse</span>
+<a name="ln-17"></a><span class="k">use </span><span class="n">mbd_linalg</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">outer</span>
+<a name="ln-18"></a><span class="k">use </span><span class="n">mbd_utils</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">tostr</span><span class="p">,</span> <span class="n">shift_idx</span>
 <a name="ln-19"></a>
 <a name="ln-20"></a><span class="k">implicit none</span>
 <a name="ln-21"></a>
@@ -354,11 +354,11 @@
 <a name="ln-89"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
 <a name="ln-90"></a><span class="k">type</span><span class="p">(</span><span class="n">matrix_re_t</span><span class="p">)</span> <span class="k">function </span><span class="n">dipole_matrix_real</span><span class="p">(</span> <span class="p">&amp;</span>
 <a name="ln-91"></a>        <span class="n">geom</span><span class="p">,</span> <span class="n">damp</span><span class="p">,</span> <span class="n">ddipmat</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">dipmat</span><span class="p">)</span>
-<a name="ln-92"></a>    <span class="k">use </span><span class="n">mbd_constants</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">ZERO</span> <span class="o">=&gt;</span> <span class="n">ZERO_REAL</span>
+<a name="ln-92"></a>    <span class="k">use </span><span class="n">mbd_constants</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">ZERO</span> <span class="o">=&gt;</span> <span class="n">ZERO_REAL</span>
 <a name="ln-93"></a><span class="cp">#else</span>
 <a name="ln-94"></a><span class="k">type</span><span class="p">(</span><span class="n">matrix_cplx_t</span><span class="p">)</span> <span class="k">function </span><span class="n">dipole_matrix_complex</span><span class="p">(</span> <span class="p">&amp;</span>
 <a name="ln-95"></a>        <span class="n">geom</span><span class="p">,</span> <span class="n">damp</span><span class="p">,</span> <span class="n">ddipmat</span><span class="p">,</span> <span class="n">grad</span><span class="p">,</span> <span class="n">q</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">dipmat</span><span class="p">)</span>
-<a name="ln-96"></a>    <span class="k">use </span><span class="n">mbd_constants</span><span class="p">,</span> <span class="n">only</span><span class="p">:</span> <span class="n">ZERO</span> <span class="o">=&gt;</span> <span class="n">ZERO_COMPLEX</span>
+<a name="ln-96"></a>    <span class="k">use </span><span class="n">mbd_constants</span><span class="p">,</span> <span class="k">only</span><span class="p">:</span> <span class="n">ZERO</span> <span class="o">=&gt;</span> <span class="n">ZERO_COMPLEX</span>
 <a name="ln-97"></a><span class="cp">#endif</span>
 <a name="ln-98"></a>
 <a name="ln-99"></a>    <span class="k">type</span><span class="p">(</span><span class="n">geom_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">inout</span><span class="p">)</span> <span class="kd">::</span> <span class="n">geom</span>
@@ -1033,7 +1033,7 @@
     <footer>
       <div class="container">
       <div class="row">
-        <div class="col-xs-6 col-md-4"><p>&copy; 2020 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
+        <div class="col-xs-6 col-md-4"><p>&copy; 2021 <a rel="license" href="http://creativecommons.org/licenses/by/4.0/"><img alt="Creative Commons License" style="border-width:0" src="https://i.creativecommons.org/l/by/4.0/80x15.png" /></a>
                                           </p></div>
         <div class="col-xs-6 col-md-4 col-md-push-4">
           <p class="text-right">
