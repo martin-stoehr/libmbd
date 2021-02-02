@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 4.0% of total for source files.">100 statements</a>
+    title=" 3.9% of total for source files.">100 statements</a>
      </li> 
      
      
@@ -320,7 +320,7 @@
 <a name="ln-55"></a>    <span class="kt">complex</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">vecs</span><span class="p">(:,</span> <span class="p">:)</span>
 <a name="ln-56"></a><span class="cp">#endif</span>
 <a name="ln-57"></a>
-<a name="ln-58"></a>    <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span><span class="o">*</span><span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span>
+<a name="ln-58"></a>    <span class="n">n</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">*</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span>
 <a name="ln-59"></a>    <span class="k">if</span> <span class="p">(</span><span class="nb">present</span><span class="p">(</span><span class="n">src</span><span class="p">))</span> <span class="n">A</span> <span class="o">=</span> <span class="n">src</span>
 <a name="ln-60"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">is_true</span><span class="p">(</span><span class="n">vals_only</span><span class="p">))</span> <span class="k">then</span>
 <a name="ln-61"></a><span class="k">        </span><span class="n">n_vecs</span> <span class="o">=</span> <span class="mi">0</span>
@@ -351,7 +351,7 @@
 <a name="ln-86"></a>    <span class="k">type</span><span class="p">(</span><span class="n">blacs_desc_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">blacs_desc</span>
 <a name="ln-87"></a>    <span class="k">type</span><span class="p">(</span><span class="n">exception_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">exc</span>
 <a name="ln-88"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">destroy</span>
-<a name="ln-89"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">eigs</span><span class="p">(</span><span class="mi">3</span><span class="o">*</span><span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span><span class="p">)</span>
+<a name="ln-89"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">eigs</span><span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">blacs_desc</span><span class="p">%</span><span class="n">n_atoms</span><span class="p">)</span>
 <a name="ln-90"></a>
 <a name="ln-91"></a><span class="cp">#ifndef DO_COMPLEX_TYPE</span>
 <a name="ln-92"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">A_</span><span class="p">(:,</span> <span class="p">:)</span>
