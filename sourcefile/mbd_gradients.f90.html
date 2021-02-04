@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 2.4% of total for source files.">61 statements</a>
+    title=" 2.6% of total for source files.">67 statements</a>
      </li> 
      
      
@@ -314,50 +314,56 @@
 <a name="ln-49"></a>    <span class="c">!! Derivatives of a scalar with respect to various quantities</span>
 <a name="ln-50"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dr</span><span class="p">(:)</span>
 <a name="ln-51"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dr_1</span>
-<a name="ln-52"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dvdw</span>
-<a name="ln-53"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dgamma</span>
-<a name="ln-54"></a><span class="k">end type</span>
-<a name="ln-55"></a>
-<a name="ln-56"></a><span class="k">type</span><span class="p">,</span> <span class="k">public</span> <span class="kd">::</span> <span class="n">grad_request_t</span>
-<a name="ln-57"></a>    <span class="c">!! Used to request derivatives with respect to function arguments</span>
-<a name="ln-58"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dcoords</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-59"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dalpha</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-60"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dalpha_dyn</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-61"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dC6</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-62"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dr_vdw</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-63"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">domega</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-64"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dsigma</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-65"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dgamma</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-66"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dq</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-67"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dlattice</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-68"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dV</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-69"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dV_free</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-70"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dX_free</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
-<a name="ln-71"></a>    <span class="k">contains</span>
-<a name="ln-72"></a><span class="k">    procedure</span> <span class="kd">::</span> <span class="nb">any</span> <span class="o">=&gt;</span> <span class="n">grad_request_any</span>
-<a name="ln-73"></a><span class="k">end type</span>
-<a name="ln-74"></a>
-<a name="ln-75"></a><span class="k">contains</span>
-<a name="ln-76"></a>
-<a name="ln-77"></a><span class="kt">logical </span><span class="k">function </span><span class="n">grad_request_any</span><span class="p">(</span><span class="n">this</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="nb">any</span><span class="p">)</span>
-<a name="ln-78"></a>    <span class="k">class</span><span class="p">(</span><span class="n">grad_request_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">this</span>
-<a name="ln-79"></a>
-<a name="ln-80"></a>    <span class="nb">any</span> <span class="o">=</span> <span class="n">this</span><span class="p">%</span><span class="n">dcoords</span> <span class="p">&amp;</span>
-<a name="ln-81"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dalpha</span> <span class="p">&amp;</span>
-<a name="ln-82"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dalpha_dyn</span> <span class="p">&amp;</span>
-<a name="ln-83"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dC6</span> <span class="p">&amp;</span>
-<a name="ln-84"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dr_vdw</span> <span class="p">&amp;</span>
-<a name="ln-85"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">domega</span> <span class="p">&amp;</span>
-<a name="ln-86"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dsigma</span> <span class="p">&amp;</span>
-<a name="ln-87"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dgamma</span> <span class="p">&amp;</span>
-<a name="ln-88"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dq</span> <span class="p">&amp;</span>
-<a name="ln-89"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dlattice</span> <span class="p">&amp;</span>
-<a name="ln-90"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dV</span> <span class="p">&amp;</span>
-<a name="ln-91"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dV_free</span> <span class="p">&amp;</span>
-<a name="ln-92"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dX_free</span>
-<a name="ln-93"></a><span class="k">end function</span>
-<a name="ln-94"></a>
-<a name="ln-95"></a><span class="k">end module</span>
+<a name="ln-52"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dk_1</span>
+<a name="ln-53"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dvdw</span>
+<a name="ln-54"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dgamma</span>
+<a name="ln-55"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dC6</span>
+<a name="ln-56"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dC6i</span>
+<a name="ln-57"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">dC6j</span>
+<a name="ln-58"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">da0i</span>
+<a name="ln-59"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span> <span class="kd">::</span> <span class="n">da0j</span>
+<a name="ln-60"></a><span class="k">end type</span>
+<a name="ln-61"></a>
+<a name="ln-62"></a><span class="k">type</span><span class="p">,</span> <span class="k">public</span> <span class="kd">::</span> <span class="n">grad_request_t</span>
+<a name="ln-63"></a>    <span class="c">!! Used to request derivatives with respect to function arguments</span>
+<a name="ln-64"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dcoords</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-65"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dalpha</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-66"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dalpha_dyn</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-67"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dC6</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-68"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dr_vdw</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-69"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">domega</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-70"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dsigma</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-71"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dgamma</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-72"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dq</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-73"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dlattice</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-74"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dV</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-75"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dV_free</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-76"></a>    <span class="kt">logical</span> <span class="kd">::</span> <span class="n">dX_free</span> <span class="o">=</span> <span class="p">.</span><span class="n">false</span><span class="p">.</span>
+<a name="ln-77"></a>    <span class="k">contains</span>
+<a name="ln-78"></a><span class="k">    procedure</span> <span class="kd">::</span> <span class="nb">any</span> <span class="o">=&gt;</span> <span class="n">grad_request_any</span>
+<a name="ln-79"></a><span class="k">end type</span>
+<a name="ln-80"></a>
+<a name="ln-81"></a><span class="k">contains</span>
+<a name="ln-82"></a>
+<a name="ln-83"></a><span class="kt">logical </span><span class="k">function </span><span class="n">grad_request_any</span><span class="p">(</span><span class="n">this</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="nb">any</span><span class="p">)</span>
+<a name="ln-84"></a>    <span class="k">class</span><span class="p">(</span><span class="n">grad_request_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">this</span>
+<a name="ln-85"></a>
+<a name="ln-86"></a>    <span class="nb">any</span> <span class="o">=</span> <span class="n">this</span><span class="p">%</span><span class="n">dcoords</span> <span class="p">&amp;</span>
+<a name="ln-87"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dalpha</span> <span class="p">&amp;</span>
+<a name="ln-88"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dalpha_dyn</span> <span class="p">&amp;</span>
+<a name="ln-89"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dC6</span> <span class="p">&amp;</span>
+<a name="ln-90"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dr_vdw</span> <span class="p">&amp;</span>
+<a name="ln-91"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">domega</span> <span class="p">&amp;</span>
+<a name="ln-92"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dsigma</span> <span class="p">&amp;</span>
+<a name="ln-93"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dgamma</span> <span class="p">&amp;</span>
+<a name="ln-94"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dq</span> <span class="p">&amp;</span>
+<a name="ln-95"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dlattice</span> <span class="p">&amp;</span>
+<a name="ln-96"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dV</span> <span class="p">&amp;</span>
+<a name="ln-97"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dV_free</span> <span class="p">&amp;</span>
+<a name="ln-98"></a>        <span class="p">.</span><span class="nb">or</span><span class="p">.</span> <span class="n">this</span><span class="p">%</span><span class="n">dX_free</span>
+<a name="ln-99"></a><span class="k">end function</span>
+<a name="ln-100"></a>
+<a name="ln-101"></a><span class="k">end module</span>
 </pre></div>
 
     </section>

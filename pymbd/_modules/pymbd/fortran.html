@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>pymbd.fortran &#8212; Libmbd 0.10.4.post2.dev0+8cc6ac9 documentation</title>
+    <title>pymbd.fortran &#8212; Libmbd 0.11.0 documentation</title>
     <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="../../_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="../../" src="../../_static/documentation_options.js"></script>
@@ -188,7 +188,7 @@
         <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_lattice</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span></div>
 
 <div class="viewcode-block" id="MBDGeom.ts_energy"><a class="viewcode-back" href="../../api.html#pymbd.fortran.MBDGeom.ts_energy">[docs]</a>    <span class="nd">@_auto_context</span>
-    <span class="k">def</span> <span class="nf">ts_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">,</span> <span class="n">sR</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="s1">&#39;fermi&#39;</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">ts_energy</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">,</span> <span class="n">sR</span><span class="p">,</span> <span class="n">d</span><span class="o">=</span><span class="mf">20.0</span><span class="p">,</span> <span class="n">damping</span><span class="o">=</span><span class="s1">&#39;fermi&#39;</span><span class="p">,</span> <span class="n">force</span><span class="o">=</span><span class="kc">False</span><span class="p">):</span>
         <span class="sd">&quot;&quot;&quot;Calculate a TS energy.</span>
 
 <span class="sd">        :param array-like alpha_0: (a.u.) atomic polarizabilities</span>
@@ -197,16 +197,36 @@
 <span class="sd">        :param float sR: TS damping parameter :math:`s_R`</span>
 <span class="sd">        :param float d: TS damping parameter :math:`d`</span>
 <span class="sd">        :param damping str: type of damping</span>
+<span class="sd">        :param force bool: if True, calculate energy gradients</span>
 <span class="sd">        &quot;&quot;&quot;</span>
         <span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span> <span class="o">=</span> <span class="nb">map</span><span class="p">(</span><span class="n">_array</span><span class="p">,</span> <span class="p">(</span><span class="n">alpha_0</span><span class="p">,</span> <span class="n">C6</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">))</span>
+        <span class="n">n_atoms</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span>
         <span class="n">damping_f</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_init_damping</span><span class="p">(</span>
             <span class="nb">len</span><span class="p">(</span><span class="bp">self</span><span class="p">),</span> <span class="n">damping</span><span class="o">.</span><span class="n">encode</span><span class="p">(),</span> <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">R_vdw</span><span class="p">),</span> <span class="n">_ffi</span><span class="o">.</span><span class="n">NULL</span><span class="p">,</span> <span class="n">sR</span><span class="p">,</span> <span class="n">d</span>
         <span class="p">)</span>
-        <span class="n">ene</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_ts_energy</span><span class="p">(</span>
-            <span class="bp">self</span><span class="o">.</span><span class="n">_geom_f</span><span class="p">,</span> <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">alpha_0</span><span class="p">),</span> <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">C6</span><span class="p">),</span> <span class="n">damping_f</span>
+        <span class="n">res_f</span> <span class="o">=</span> <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_ts_energy</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">_geom_f</span><span class="p">,</span>
+            <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">alpha_0</span><span class="p">),</span>
+            <span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">C6</span><span class="p">),</span>
+            <span class="n">damping_f</span><span class="p">,</span>
+            <span class="n">force</span><span class="p">,</span>
         <span class="p">)</span>
         <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_destroy_damping</span><span class="p">(</span><span class="n">damping_f</span><span class="p">)</span>
         <span class="bp">self</span><span class="o">.</span><span class="n">_check_exc</span><span class="p">()</span>
+        <span class="n">ene</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">empty</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>  <span class="c1"># for some reason np.array(0) doesn&#39;t work</span>
+        <span class="n">gradients</span><span class="p">,</span> <span class="n">lattice_gradients</span> <span class="o">=</span> <span class="mi">2</span> <span class="o">*</span> <span class="p">[</span><span class="kc">None</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
+            <span class="n">gradients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="n">n_atoms</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_lattice</span><span class="p">():</span>
+                <span class="n">lattice_gradients</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">((</span><span class="mi">3</span><span class="p">,</span> <span class="mi">3</span><span class="p">))</span>
+        <span class="n">results</span> <span class="o">=</span> <span class="n">ene</span><span class="p">,</span> <span class="n">gradients</span><span class="p">,</span> <span class="n">lattice_gradients</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span><span class="p">,</span> <span class="kc">None</span>
+        <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_get_results</span><span class="p">(</span><span class="n">res_f</span><span class="p">,</span> <span class="o">*</span><span class="p">(</span><span class="n">_cast</span><span class="p">(</span><span class="s1">&#39;double*&#39;</span><span class="p">,</span> <span class="n">x</span><span class="p">)</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">results</span><span class="p">))</span>
+        <span class="n">_lib</span><span class="o">.</span><span class="n">cmbd_destroy_result</span><span class="p">(</span><span class="n">res_f</span><span class="p">)</span>
+        <span class="n">ene</span> <span class="o">=</span> <span class="n">ene</span><span class="o">.</span><span class="n">item</span><span class="p">()</span>
+        <span class="k">if</span> <span class="n">force</span><span class="p">:</span>
+            <span class="n">ene</span> <span class="o">=</span> <span class="p">(</span><span class="n">ene</span><span class="p">,</span> <span class="n">gradients</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">has_lattice</span><span class="p">():</span>
+                <span class="n">ene</span> <span class="o">+=</span> <span class="p">(</span><span class="n">lattice_gradients</span><span class="p">,)</span>
         <span class="k">return</span> <span class="n">ene</span></div>
 
 <div class="viewcode-block" id="MBDGeom.mbd_energy"><a class="viewcode-back" href="../../api.html#pymbd.fortran.MBDGeom.mbd_energy">[docs]</a>    <span class="nd">@_auto_context</span>

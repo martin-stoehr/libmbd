@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 6.2% of total for modules and submodules.">158 statements</a>
+    title=" 7.9% of total for modules and submodules.">205 statements</a>
      </li> 
      
      
@@ -180,8 +180,6 @@
   <div class="panel-heading text-left"><h3 class="panel-title"><a data-toggle="collapse" href="#funcs-0">Functions</a></h3></div>
   <div id="funcs-0" class="panel-collapse collapse">
     <div class="list-group">
-      
-      <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy_num_grad">get_ts_energy_num_grad</a>
       
       <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy">get_ts_energy</a>
       
@@ -265,8 +263,6 @@
   <div id="funcs-1" class="panel-collapse collapse">
     <div class="list-group">
       
-      <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy_num_grad">get_ts_energy_num_grad</a>
-      
       <a class="list-group-item" href="../module/mbd_ts.html#proc-get_ts_energy">get_ts_energy</a>
       
     </div>
@@ -304,8 +300,8 @@
     
     
   <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-get_ts_energy_num_grad"></span><h3>
-public function <a href='../proc/get_ts_energy_num_grad.html'>get_ts_energy_num_grad</a>(geom, alpha_0, C6, damp, grad) result(res)
+  <div class="panel-heading codesum"><span class="anchor" id="proc-get_ts_energy"></span><h3>
+public function <a href='../proc/get_ts_energy.html'>get_ts_energy</a>(geom, alpha_0, C6, damp, grad) result(res)
     
     
    
@@ -320,7 +316,7 @@ public function <a href='../proc/get_ts_energy_num_grad.html'>get_ts_energy_num_
 
 
 
-<p>Get TS energy and numerical gradients.</p>
+<p>Get TS energy.</p>
     
     <h4>Arguments</h4>
     
@@ -422,119 +418,6 @@ public function <a href='../proc/get_ts_energy_num_grad.html'>get_ts_energy_num_
   
   
      <h4>Return Value <small>type(<a href='../type/result_t.html'>result_t</a>)
-  </small></h4>
-  
-    
-
-  </div>
-  </div>
-
-    
-    
-  <div class="panel panel-default">
-  <div class="panel-heading codesum"><span class="anchor" id="proc-get_ts_energy"></span><h3>
-public function <a href='../proc/get_ts_energy.html'>get_ts_energy</a>(geom, alpha_0, C6, damp) result(ene)
-    
-    
-   
-</h3></div>
-  <div class="panel-body">
-       
-    
-
-
-
-
-
-
-
-<p>Get TS energy.</p>
-    
-    <h4>Arguments</h4>
-    
-      
-      
-<table class="table table-striped varlist">
-<thead><tr><th>Type</th>
-<th>Intent</th><th>Optional</th>
-<th>Attributes</th><th></th><th>Name</th><th></th></thead>
-
-
-
-<tbody>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>type(<a href='../type/geom_t.html'>geom_t</a>),</td>
-  <td>intent(inout)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>geom</strong></td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=dp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>alpha_0</strong>(:)</td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>real(kind=dp),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>C6</strong>(:)</td><td></td>
-  
-</tr>
-
-  
-  
-  
-  
-<tr>
-  
-  <td><span class="anchor" ></span>type(<a href='../type/damping_t.html'>damping_t</a>),</td>
-  <td>intent(in)</td>
-  <td></td>
-  
-  <td></td><td>::</td>
-  <td><strong>damp</strong></td><td></td>
-  
-</tr>
-
-</tbody>
-</table>
-
-      
-    
-    
-
-  
-  
-  
-  
-     <h4>Return Value <small>real(kind=dp)
   </small></h4>
   
     

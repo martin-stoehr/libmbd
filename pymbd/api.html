@@ -5,7 +5,7 @@
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>API &#8212; Libmbd 0.10.4.post2.dev0+8cc6ac9 documentation</title>
+    <title>API &#8212; Libmbd 0.11.0 documentation</title>
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
     <link rel="stylesheet" href="_static/alabaster.css" type="text/css" />
     <script id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
@@ -181,7 +181,7 @@ molecule and vacuum</p></li>
 
 <dl class="py method">
 <dt id="pymbd.fortran.MBDGeom.ts_energy">
-<code class="sig-name descname">ts_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span></em>, <em class="sig-param"><span class="n">sR</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">20.0</span></em>, <em class="sig-param"><span class="n">damping</span><span class="o">=</span><span class="default_value">'fermi'</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy" title="Permalink to this definition">¶</a></dt>
+<code class="sig-name descname">ts_energy</code><span class="sig-paren">(</span><em class="sig-param"><span class="n">alpha_0</span></em>, <em class="sig-param"><span class="n">C6</span></em>, <em class="sig-param"><span class="n">R_vdw</span></em>, <em class="sig-param"><span class="n">sR</span></em>, <em class="sig-param"><span class="n">d</span><span class="o">=</span><span class="default_value">20.0</span></em>, <em class="sig-param"><span class="n">damping</span><span class="o">=</span><span class="default_value">'fermi'</span></em>, <em class="sig-param"><span class="n">force</span><span class="o">=</span><span class="default_value">False</span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/pymbd/fortran.html#MBDGeom.ts_energy"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#pymbd.fortran.MBDGeom.ts_energy" title="Permalink to this definition">¶</a></dt>
 <dd><p>Calculate a TS energy.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -192,6 +192,7 @@ molecule and vacuum</p></li>
 <li><p><strong>sR</strong> (<em>float</em>) – TS damping parameter <span class="math notranslate nohighlight">\(s_R\)</span></p></li>
 <li><p><strong>d</strong> (<em>float</em>) – TS damping parameter <span class="math notranslate nohighlight">\(d\)</span></p></li>
 <li><p><strong>str</strong> (<em>damping</em>) – type of damping</p></li>
+<li><p><strong>bool</strong> (<em>force</em>) – if True, calculate energy gradients</p></li>
 </ul>
 </dd>
 </dl>

@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 8.7% of total for procedures.">57 statements</a>
+    title="14.8% of total for procedures.">96 statements</a>
      </li> 
      
      
@@ -195,7 +195,7 @@
     
     <div class="col-md-9" id='text'>
     <h2>
-public function get_ts_energy(geom, alpha_0, C6, damp) result(ene)
+public function get_ts_energy(geom, alpha_0, C6, damp, grad) result(res)
     
     
    
@@ -226,7 +226,7 @@ public function get_ts_energy(geom, alpha_0, C6, damp) result(ene)
   
 <tr>
   
-  <td><span class="anchor" id="variable-geom~2"></span>type(<a href='../type/geom_t.html'>geom_t</a>),</td>
+  <td><span class="anchor" id="variable-geom"></span>type(<a href='../type/geom_t.html'>geom_t</a>),</td>
   <td>intent(inout)</td>
   <td></td>
   
@@ -241,7 +241,7 @@ public function get_ts_energy(geom, alpha_0, C6, damp) result(ene)
   
 <tr>
   
-  <td><span class="anchor" id="variable-alpha_0~2"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-alpha_0"></span>real(kind=dp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -256,7 +256,7 @@ public function get_ts_energy(geom, alpha_0, C6, damp) result(ene)
   
 <tr>
   
-  <td><span class="anchor" id="variable-c6~2"></span>real(kind=dp),</td>
+  <td><span class="anchor" id="variable-c6"></span>real(kind=dp),</td>
   <td>intent(in)</td>
   <td></td>
   
@@ -271,12 +271,27 @@ public function get_ts_energy(geom, alpha_0, C6, damp) result(ene)
   
 <tr>
   
-  <td><span class="anchor" id="variable-damp~2"></span>type(<a href='../type/damping_t.html'>damping_t</a>),</td>
+  <td><span class="anchor" id="variable-damp"></span>type(<a href='../type/damping_t.html'>damping_t</a>),</td>
   <td>intent(in)</td>
   <td></td>
   
   <td></td><td>::</td>
   <td><strong>damp</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-grad"></span>type(<a href='../type/grad_request_t.html'>grad_request_t</a>),</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>grad</strong></td><td></td>
   
 </tr>
 
@@ -290,7 +305,7 @@ public function get_ts_energy(geom, alpha_0, C6, damp) result(ene)
     
     
     
-   <h3>Return Value <small><span class="anchor" id="variable-ene"></span>real(kind=dp)
+   <h3>Return Value <small><span class="anchor" id="variable-res"></span>type(<a href='../type/result_t.html'>result_t</a>)
   </small></h3>
     
     
