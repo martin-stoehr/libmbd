@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 8.9% of total for modules and submodules.">233 statements</a>
+    title=" 9.9% of total for modules and submodules.">261 statements</a>
      </li> 
      
      
@@ -417,6 +417,20 @@
   <td>public</td>
   <td></td><td>::</td>
   <td><strong>calculate_forces</strong></td><td> =</td><td>.true.</td><td><p>Whether to calculate forces.</p></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" id="variable-calculate_vdw_params_gradients"></span>logical,</td>
+  
+  <td>public</td>
+  <td></td><td>::</td>
+  <td><strong>calculate_vdw_params_gradients</strong></td><td> =</td><td>.false.</td><td><p>Whether to calculate gradients of energy w.r.t. vdW parameters</p></td>
   
 </tr>
 
@@ -737,6 +751,9 @@
        <tr><td>procedure, public :: <strong><a href='../type/mbd_calc_t.html#boundprocedure-destroy'>destroy</a></strong>  => mbd_calc_destroy </td>
        <td></td></tr>
       
+       <tr><td>procedure, public :: <strong><a href='../type/mbd_calc_t.html#boundprocedure-switch_forces'>switch_forces</a></strong>  => mbd_calc_switch_forces </td>
+       <td></td></tr>
+      
        <tr><td>procedure, public :: <strong><a href='../type/mbd_calc_t.html#boundprocedure-update_coords'>update_coords</a></strong>  => mbd_calc_update_coords </td>
        <td></td></tr>
       
@@ -756,6 +773,9 @@
        <td></td></tr>
       
        <tr><td>procedure, public :: <strong><a href='../type/mbd_calc_t.html#boundprocedure-get_gradients'>get_gradients</a></strong>  => mbd_calc_get_gradients </td>
+       <td></td></tr>
+      
+       <tr><td>procedure, public :: <strong><a href='../type/mbd_calc_t.html#boundprocedure-get_vdw_params_ratios_gradients'>get_vdw_params_ratios_gradients</a></strong>  => mbd_calc_get_vdw_params_ratios_gradients </td>
        <td></td></tr>
       
        <tr><td>procedure, public :: <strong><a href='../type/mbd_calc_t.html#boundprocedure-get_lattice_derivs'>get_lattice_derivs</a></strong>  => mbd_calc_get_lattice_derivs </td>

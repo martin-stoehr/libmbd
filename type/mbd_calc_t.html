@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title="<p>12.9% of total for derived types.</p>Including implementation: 189 statements, 31.5% of total for derived types.">26 statements</a>
+    title="<p>15.0% of total for derived types.</p>Including implementation: 216 statements, 34.4% of total for derived types.">31 statements</a>
      </li> 
      
      
@@ -193,6 +193,8 @@
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-destroy">destroy</a>
       
+      <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-switch_forces">switch_forces</a>
+      
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-update_coords">update_coords</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-update_lattice_vectors">update_lattice_vectors</a>
@@ -206,6 +208,8 @@
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-evaluate_vdw_method">evaluate_vdw_method</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_gradients">get_gradients</a>
+      
+      <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_vdw_params_ratios_gradients">get_vdw_params_ratios_gradients</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_lattice_derivs">get_lattice_derivs</a>
       
@@ -269,6 +273,8 @@
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-destroy">destroy</a>
       
+      <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-switch_forces">switch_forces</a>
+      
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-update_coords">update_coords</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-update_lattice_vectors">update_lattice_vectors</a>
@@ -282,6 +288,8 @@
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-evaluate_vdw_method">evaluate_vdw_method</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_gradients">get_gradients</a>
+      
+      <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_vdw_params_ratios_gradients">get_vdw_params_ratios_gradients</a>
       
       <a class="list-group-item" href="../type/mbd_calc_t.html#boundprocedure-get_lattice_derivs">get_lattice_derivs</a>
       
@@ -447,6 +455,89 @@ private subroutine mbd_calc_destroy(this)
   
   <td>target</td><td>::</td>
   <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+        
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+     
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-switch_forces"></span><h3>procedure, public :: <strong>switch_forces</strong>  => mbd_calc_switch_forces 
+    
+  </h3></div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+        
+          
+    
+    <h3>
+private subroutine mbd_calc_switch_forces(this, forces)
+    
+    
+   
+</h3>
+    
+
+
+
+<p>Update whether to calculate forces.</p>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/mbd_calc_t.html'>mbd_calc_t</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>logical,</td>
+  <td>intent(in)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>forces</strong></td><td><p>Whether to calcualte forces.</p></td>
   
 </tr>
 
@@ -1083,6 +1174,90 @@ private subroutine mbd_calc_get_gradients(this, gradients)
   <td></td><td>::</td>
   <td><strong>gradients</strong>(:,:)</td><td><p>(<script type="math/tex">3\times N</script>, a.u.) Energy gradients, <script type="math/tex">\mathrm dE/\mathrm d\mathbf
  R_i</script>, index <script type="math/tex">i</script> runs over columns.</p></td>
+  
+</tr>
+
+</tbody>
+</table>
+
+      
+    
+    
+
+        
+      
+      </li>
+    
+  </ul>
+</div>
+
+    
+     
+<div class="panel panel-default">
+  <div class="panel-heading codesum"><span class="anchor" id="boundprocedure-get_vdw_params_ratios_gradients"></span><h3>procedure, public :: <strong>get_vdw_params_ratios_gradients</strong>  => mbd_calc_get_vdw_params_ratios_gradients 
+    
+  </h3></div>
+  
+  <ul class="list-group">
+    
+      <li class="list-group-item">
+      
+        
+          
+    
+    <h3>
+private subroutine mbd_calc_get_vdw_params_ratios_gradients(this, dE_dratios)
+    
+    
+   
+</h3>
+    
+
+
+
+<p>Get gradients of the energy w.r.t. Hirshfeld ratios if they were
+ requested in the MBD input.</p>
+    
+    <h4>Arguments</h4>
+    
+      
+      
+<table class="table table-striped varlist">
+<thead><tr><th>Type</th>
+<th>Intent</th><th>Optional</th>
+<th>Attributes</th><th></th><th>Name</th><th></th></thead>
+
+
+
+<tbody>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>class(<a href='../type/mbd_calc_t.html'>mbd_calc_t</a>),</td>
+  <td>intent(inout)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>this</strong></td><td></td>
+  
+</tr>
+
+  
+  
+  
+  
+<tr>
+  
+  <td><span class="anchor" ></span>real(kind=dp),</td>
+  <td>intent(out)</td>
+  <td></td>
+  
+  <td></td><td>::</td>
+  <td><strong>dE_dratios</strong>(:)</td><td><p>Gradients of the energy w.r.t. Hirshfeld ratios.</p></td>
   
 </tr>
 
