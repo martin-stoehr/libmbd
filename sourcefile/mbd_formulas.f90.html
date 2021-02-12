@@ -128,7 +128,7 @@
      <li><i class="fa fa-list-ol"></i>
        <a data-toggle="tooltip"
     data-placement="bottom" data-html="true"
-    title=" 3.0% of total for source files.">78 statements</a>
+    title=" 3.2% of total for source files.">84 statements</a>
      </li> 
      
      
@@ -323,81 +323,87 @@
 <a name="ln-58"></a>        <span class="k">associate</span> <span class="p">(</span><span class="n">alpha</span> <span class="o">=&gt;</span> <span class="n">alpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">),</span> <span class="n">u</span> <span class="o">=&gt;</span> <span class="n">freq</span><span class="p">(</span><span class="n">i_freq</span><span class="p">)%</span><span class="n">val</span><span class="p">)</span>
 <a name="ln-59"></a>            <span class="n">alpha</span> <span class="o">=</span> <span class="n">alpha_0</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span> <span class="o">+</span> <span class="p">(</span><span class="n">u</span> <span class="o">/</span> <span class="n">omega</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
 <a name="ln-60"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">dalpha</span><span class="p">)</span> <span class="n">dalpha</span><span class="p">(</span><span class="n">i_freq</span><span class="p">)%</span><span class="n">dalpha</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">/</span> <span class="n">alpha_0</span>
-<a name="ln-61"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">domega</span><span class="p">)</span> <span class="n">dalpha</span><span class="p">(</span><span class="n">i_freq</span><span class="p">)%</span><span class="n">domega</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="mi">2</span><span class="n">d0</span> <span class="o">/</span> <span class="n">omega</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="n">d0</span> <span class="o">+</span> <span class="p">(</span><span class="n">omega</span> <span class="o">/</span> <span class="n">u</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
-<a name="ln-62"></a>        <span class="k">end associate</span>
-<a name="ln-63"></a><span class="k">    end do</span>
-<a name="ln-64"></a><span class="k">end function</span>
-<a name="ln-65"></a>
-<a name="ln-66"></a><span class="k">function </span><span class="n">C6_from_alpha</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">dC6_dalpha</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">C6</span><span class="p">)</span>
-<a name="ln-67"></a>    <span class="c">!! $$</span>
-<a name="ln-68"></a>    <span class="c">!! \bar C_6=\frac3\pi\int_0^\infty\mathrm du\,\bar\alpha(u)^2,\qquad</span>
-<a name="ln-69"></a>    <span class="c">!! \partial\bar C_6=\frac6\pi\int_0^\infty\mathrm du</span>
-<a name="ln-70"></a>    <span class="c">!! \bar\alpha(u)\partial\bar\alpha(u)</span>
-<a name="ln-71"></a>    <span class="c">!! $$</span>
-<a name="ln-72"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">alpha</span><span class="p">(:,</span> <span class="mi">0</span><span class="p">:)</span>
-<a name="ln-73"></a>    <span class="k">type</span><span class="p">(</span><span class="n">quad_pt_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">freq</span><span class="p">(</span><span class="mi">0</span><span class="p">:)</span>
-<a name="ln-74"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">dC6_dalpha</span><span class="p">(:,</span> <span class="p">:)</span>
-<a name="ln-75"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">grad</span>
-<a name="ln-76"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">C6</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
-<a name="ln-77"></a>
-<a name="ln-78"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i_freq</span><span class="p">,</span> <span class="n">n_atoms</span>
-<a name="ln-79"></a>
-<a name="ln-80"></a>    <span class="n">n_atoms</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
-<a name="ln-81"></a>    <span class="n">C6</span> <span class="o">=</span> <span class="mi">0</span><span class="n">d0</span>
-<a name="ln-82"></a>    <span class="k">do </span><span class="n">i_freq</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">ubound</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<a name="ln-83"></a>        <span class="n">C6</span> <span class="o">=</span> <span class="n">C6</span> <span class="o">+</span> <span class="mi">3</span><span class="n">d0</span> <span class="o">/</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">freq</span><span class="p">(</span><span class="n">i_freq</span><span class="p">)%</span><span class="n">weight</span>
-<a name="ln-84"></a>    <span class="k">end do</span>
-<a name="ln-85"></a><span class="k">    if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="nb">present</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span> <span class="k">return</span>
-<a name="ln-86"></a><span class="k">    if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="n">grad</span><span class="p">)</span> <span class="k">return</span>
-<a name="ln-87"></a><span class="k">    allocate</span> <span class="p">(</span><span class="n">dC6_dalpha</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="nb">ubound</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="n">d0</span><span class="p">)</span>
+<a name="ln-61"></a>            <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">domega</span><span class="p">)</span> <span class="k">then</span>
+<a name="ln-62"></a><span class="k">                if</span> <span class="p">(</span><span class="n">u</span> <span class="o">&lt;=</span> <span class="mi">0</span><span class="n">d0</span><span class="p">)</span> <span class="k">then</span>
+<a name="ln-63"></a><span class="k">                    allocate</span> <span class="p">(</span><span class="n">dalpha</span><span class="p">(</span><span class="n">i_freq</span><span class="p">)%</span><span class="n">domega</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">omega</span><span class="p">)),</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="n">d0</span><span class="p">)</span>
+<a name="ln-64"></a>                <span class="k">else</span>
+<a name="ln-65"></a><span class="k">                    </span><span class="n">dalpha</span><span class="p">(</span><span class="n">i_freq</span><span class="p">)%</span><span class="n">domega</span> <span class="o">=</span> <span class="n">alpha</span> <span class="o">*</span> <span class="mi">2</span><span class="n">d0</span> <span class="o">/</span> <span class="n">omega</span> <span class="o">/</span> <span class="p">(</span><span class="mi">1</span><span class="n">d0</span> <span class="o">+</span> <span class="p">(</span><span class="n">omega</span> <span class="o">/</span> <span class="n">u</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+<a name="ln-66"></a>                <span class="k">end if</span>
+<a name="ln-67"></a><span class="k">            end if</span>
+<a name="ln-68"></a><span class="k">        end associate</span>
+<a name="ln-69"></a><span class="k">    end do</span>
+<a name="ln-70"></a><span class="k">end function</span>
+<a name="ln-71"></a>
+<a name="ln-72"></a><span class="k">function </span><span class="n">C6_from_alpha</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">freq</span><span class="p">,</span> <span class="n">dC6_dalpha</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">C6</span><span class="p">)</span>
+<a name="ln-73"></a>    <span class="c">!! $$</span>
+<a name="ln-74"></a>    <span class="c">!! \bar C_6=\frac3\pi\int_0^\infty\mathrm du\,\bar\alpha(u)^2,\qquad</span>
+<a name="ln-75"></a>    <span class="c">!! \partial\bar C_6=\frac6\pi\int_0^\infty\mathrm du</span>
+<a name="ln-76"></a>    <span class="c">!! \bar\alpha(u)\partial\bar\alpha(u)</span>
+<a name="ln-77"></a>    <span class="c">!! $$</span>
+<a name="ln-78"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">alpha</span><span class="p">(:,</span> <span class="mi">0</span><span class="p">:)</span>
+<a name="ln-79"></a>    <span class="k">type</span><span class="p">(</span><span class="n">quad_pt_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">freq</span><span class="p">(</span><span class="mi">0</span><span class="p">:)</span>
+<a name="ln-80"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">dC6_dalpha</span><span class="p">(:,</span> <span class="p">:)</span>
+<a name="ln-81"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">grad</span>
+<a name="ln-82"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">C6</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">1</span><span class="p">))</span>
+<a name="ln-83"></a>
+<a name="ln-84"></a>    <span class="kt">integer</span> <span class="kd">::</span> <span class="n">i_freq</span><span class="p">,</span> <span class="n">n_atoms</span>
+<a name="ln-85"></a>
+<a name="ln-86"></a>    <span class="n">n_atoms</span> <span class="o">=</span> <span class="n">size</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<a name="ln-87"></a>    <span class="n">C6</span> <span class="o">=</span> <span class="mi">0</span><span class="n">d0</span>
 <a name="ln-88"></a>    <span class="k">do </span><span class="n">i_freq</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">ubound</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
-<a name="ln-89"></a>        <span class="n">dC6_dalpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span> <span class="o">=</span> <span class="n">dC6_dalpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span><span class="n">d0</span> <span class="o">/</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span>
+<a name="ln-89"></a>        <span class="n">C6</span> <span class="o">=</span> <span class="n">C6</span> <span class="o">+</span> <span class="mi">3</span><span class="n">d0</span> <span class="o">/</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span> <span class="o">*</span> <span class="n">freq</span><span class="p">(</span><span class="n">i_freq</span><span class="p">)%</span><span class="n">weight</span>
 <a name="ln-90"></a>    <span class="k">end do</span>
-<a name="ln-91"></a><span class="k">end function</span>
-<a name="ln-92"></a>
-<a name="ln-93"></a><span class="k">function </span><span class="n">sigma_selfint</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">dsigma_dalpha</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
-<a name="ln-94"></a>    <span class="c">!! $$</span>
-<a name="ln-95"></a>    <span class="c">!! \begin{gathered}</span>
-<a name="ln-96"></a>    <span class="c">!! \sigma_i(u)=\left(\frac13\sqrt{\frac2\pi}\alpha_i(u)\right)^{\frac13},\qquad</span>
-<a name="ln-97"></a>    <span class="c">!! \partial\sigma_i=\sigma_i\frac{\partial\alpha_i}{3\alpha_i}</span>
-<a name="ln-98"></a>    <span class="c">!! \\ \sigma_{ij}(u)=\sqrt{\sigma_i(u)^2+\sigma_j(u)^2},\qquad</span>
-<a name="ln-99"></a>    <span class="c">!! \partial\sigma_{ij}=</span>
-<a name="ln-100"></a>    <span class="c">!! \frac{\sigma_i\partial\sigma_i+\sigma_j\partial\sigma_j}{\sigma_{ij}}</span>
-<a name="ln-101"></a>    <span class="c">!! \end{gathered}</span>
-<a name="ln-102"></a>    <span class="c">!! $$</span>
-<a name="ln-103"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">alpha</span><span class="p">(:)</span>
-<a name="ln-104"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">dsigma_dalpha</span><span class="p">(:)</span>
-<a name="ln-105"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">grad</span>
-<a name="ln-106"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sigma</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
-<a name="ln-107"></a>
-<a name="ln-108"></a>    <span class="n">sigma</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="n">d0</span> <span class="o">/</span> <span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">3</span><span class="n">d0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="n">d0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
-<a name="ln-109"></a>    <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="nb">present</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span> <span class="k">return</span>
-<a name="ln-110"></a><span class="k">    if</span> <span class="p">(</span><span class="n">grad</span><span class="p">)</span> <span class="n">dsigma_dalpha</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span>
-<a name="ln-111"></a><span class="k">end function</span>
-<a name="ln-112"></a>
-<a name="ln-113"></a><span class="k">function </span><span class="n">scale_with_ratio</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
-<a name="ln-114"></a>    <span class="c">!! $$</span>
-<a name="ln-115"></a>    <span class="c">!! x&#39;=x\left(\frac{y&#39;}y\right)^q,\qquad</span>
-<a name="ln-116"></a>    <span class="c">!! \partial x&#39;=x\left(</span>
-<a name="ln-117"></a>    <span class="c">!! \frac{\partial x}x+</span>
-<a name="ln-118"></a>    <span class="c">!! q\frac{\partial y&#39;}{y&#39;}-</span>
-<a name="ln-119"></a>    <span class="c">!! q\frac{\partial y}{y}</span>
-<a name="ln-120"></a>    <span class="c">!! \right)</span>
-<a name="ln-121"></a>    <span class="c">!! $$</span>
-<a name="ln-122"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span><span class="p">(:),</span> <span class="n">yp</span><span class="p">(:),</span> <span class="n">y</span><span class="p">(:)</span>
-<a name="ln-123"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">q</span>
-<a name="ln-124"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">dx</span>
-<a name="ln-125"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_request_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">grad</span>
-<a name="ln-126"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xp</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
-<a name="ln-127"></a>
-<a name="ln-128"></a>    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">yp</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="n">q</span>
-<a name="ln-129"></a>    <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="nb">present</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span> <span class="k">return</span>
-<a name="ln-130"></a><span class="k">    if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">dX_free</span><span class="p">)</span> <span class="n">dx</span><span class="p">%</span><span class="n">dX_free</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">/</span> <span class="n">x</span>
-<a name="ln-131"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">dV</span><span class="p">)</span> <span class="n">dx</span><span class="p">%</span><span class="n">dV</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">*</span> <span class="n">q</span> <span class="o">/</span> <span class="n">yp</span>
-<a name="ln-132"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">dV_free</span><span class="p">)</span> <span class="n">dx</span><span class="p">%</span><span class="n">dV_free</span> <span class="o">=</span> <span class="o">-</span><span class="n">xp</span> <span class="o">*</span> <span class="n">q</span> <span class="o">/</span> <span class="n">y</span>
-<a name="ln-133"></a><span class="k">end function</span>
-<a name="ln-134"></a>
-<a name="ln-135"></a><span class="k">end module</span>
+<a name="ln-91"></a><span class="k">    if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="nb">present</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span> <span class="k">return</span>
+<a name="ln-92"></a><span class="k">    if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="n">grad</span><span class="p">)</span> <span class="k">return</span>
+<a name="ln-93"></a><span class="k">    allocate</span> <span class="p">(</span><span class="n">dC6_dalpha</span><span class="p">(</span><span class="n">n_atoms</span><span class="p">,</span> <span class="mi">0</span><span class="p">:</span><span class="nb">ubound</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">2</span><span class="p">)),</span> <span class="n">source</span><span class="o">=</span><span class="mi">0</span><span class="n">d0</span><span class="p">)</span>
+<a name="ln-94"></a>    <span class="k">do </span><span class="n">i_freq</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span> <span class="nb">ubound</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="mi">2</span><span class="p">)</span>
+<a name="ln-95"></a>        <span class="n">dC6_dalpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span> <span class="o">=</span> <span class="n">dC6_dalpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span> <span class="o">+</span> <span class="mi">6</span><span class="n">d0</span> <span class="o">/</span> <span class="n">pi</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">(:,</span> <span class="n">i_freq</span><span class="p">)</span>
+<a name="ln-96"></a>    <span class="k">end do</span>
+<a name="ln-97"></a><span class="k">end function</span>
+<a name="ln-98"></a>
+<a name="ln-99"></a><span class="k">function </span><span class="n">sigma_selfint</span><span class="p">(</span><span class="n">alpha</span><span class="p">,</span> <span class="n">dsigma_dalpha</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">sigma</span><span class="p">)</span>
+<a name="ln-100"></a>    <span class="c">!! $$</span>
+<a name="ln-101"></a>    <span class="c">!! \begin{gathered}</span>
+<a name="ln-102"></a>    <span class="c">!! \sigma_i(u)=\left(\frac13\sqrt{\frac2\pi}\alpha_i(u)\right)^{\frac13},\qquad</span>
+<a name="ln-103"></a>    <span class="c">!! \partial\sigma_i=\sigma_i\frac{\partial\alpha_i}{3\alpha_i}</span>
+<a name="ln-104"></a>    <span class="c">!! \\ \sigma_{ij}(u)=\sqrt{\sigma_i(u)^2+\sigma_j(u)^2},\qquad</span>
+<a name="ln-105"></a>    <span class="c">!! \partial\sigma_{ij}=</span>
+<a name="ln-106"></a>    <span class="c">!! \frac{\sigma_i\partial\sigma_i+\sigma_j\partial\sigma_j}{\sigma_{ij}}</span>
+<a name="ln-107"></a>    <span class="c">!! \end{gathered}</span>
+<a name="ln-108"></a>    <span class="c">!! $$</span>
+<a name="ln-109"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">alpha</span><span class="p">(:)</span>
+<a name="ln-110"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">allocatable</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">dsigma_dalpha</span><span class="p">(:)</span>
+<a name="ln-111"></a>    <span class="kt">logical</span><span class="p">,</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">grad</span>
+<a name="ln-112"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">sigma</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">alpha</span><span class="p">))</span>
+<a name="ln-113"></a>
+<a name="ln-114"></a>    <span class="n">sigma</span> <span class="o">=</span> <span class="p">(</span><span class="nb">sqrt</span><span class="p">(</span><span class="mi">2</span><span class="n">d0</span> <span class="o">/</span> <span class="n">pi</span><span class="p">)</span> <span class="o">*</span> <span class="n">alpha</span> <span class="o">/</span> <span class="mi">3</span><span class="n">d0</span><span class="p">)</span><span class="o">**</span><span class="p">(</span><span class="mi">1</span><span class="n">d0</span> <span class="o">/</span> <span class="mi">3</span><span class="p">)</span>
+<a name="ln-115"></a>    <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="nb">present</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span> <span class="k">return</span>
+<a name="ln-116"></a><span class="k">    if</span> <span class="p">(</span><span class="n">grad</span><span class="p">)</span> <span class="n">dsigma_dalpha</span> <span class="o">=</span> <span class="n">sigma</span> <span class="o">/</span> <span class="p">(</span><span class="mi">3</span> <span class="o">*</span> <span class="n">alpha</span><span class="p">)</span>
+<a name="ln-117"></a><span class="k">end function</span>
+<a name="ln-118"></a>
+<a name="ln-119"></a><span class="k">function </span><span class="n">scale_with_ratio</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">yp</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span> <span class="n">q</span><span class="p">,</span> <span class="n">dx</span><span class="p">,</span> <span class="n">grad</span><span class="p">)</span> <span class="k">result</span><span class="p">(</span><span class="n">xp</span><span class="p">)</span>
+<a name="ln-120"></a>    <span class="c">!! $$</span>
+<a name="ln-121"></a>    <span class="c">!! x&#39;=x\left(\frac{y&#39;}y\right)^q,\qquad</span>
+<a name="ln-122"></a>    <span class="c">!! \partial x&#39;=x\left(</span>
+<a name="ln-123"></a>    <span class="c">!! \frac{\partial x}x+</span>
+<a name="ln-124"></a>    <span class="c">!! q\frac{\partial y&#39;}{y&#39;}-</span>
+<a name="ln-125"></a>    <span class="c">!! q\frac{\partial y}{y}</span>
+<a name="ln-126"></a>    <span class="c">!! \right)</span>
+<a name="ln-127"></a>    <span class="c">!! $$</span>
+<a name="ln-128"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">x</span><span class="p">(:),</span> <span class="n">yp</span><span class="p">(:),</span> <span class="n">y</span><span class="p">(:)</span>
+<a name="ln-129"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">)</span> <span class="kd">::</span> <span class="n">q</span>
+<a name="ln-130"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">out</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">dx</span>
+<a name="ln-131"></a>    <span class="k">type</span><span class="p">(</span><span class="n">grad_request_t</span><span class="p">),</span> <span class="k">intent</span><span class="p">(</span><span class="n">in</span><span class="p">),</span> <span class="k">optional</span> <span class="kd">::</span> <span class="n">grad</span>
+<a name="ln-132"></a>    <span class="kt">real</span><span class="p">(</span><span class="n">dp</span><span class="p">)</span> <span class="kd">::</span> <span class="n">xp</span><span class="p">(</span><span class="n">size</span><span class="p">(</span><span class="n">x</span><span class="p">))</span>
+<a name="ln-133"></a>
+<a name="ln-134"></a>    <span class="n">xp</span> <span class="o">=</span> <span class="n">x</span> <span class="o">*</span> <span class="p">(</span><span class="n">yp</span> <span class="o">/</span> <span class="n">y</span><span class="p">)</span><span class="o">**</span><span class="n">q</span>
+<a name="ln-135"></a>    <span class="k">if</span> <span class="p">(.</span><span class="nb">not</span><span class="p">.</span> <span class="nb">present</span><span class="p">(</span><span class="n">grad</span><span class="p">))</span> <span class="k">return</span>
+<a name="ln-136"></a><span class="k">    if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">dX_free</span><span class="p">)</span> <span class="n">dx</span><span class="p">%</span><span class="n">dX_free</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">/</span> <span class="n">x</span>
+<a name="ln-137"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">dV</span><span class="p">)</span> <span class="n">dx</span><span class="p">%</span><span class="n">dV</span> <span class="o">=</span> <span class="n">xp</span> <span class="o">*</span> <span class="n">q</span> <span class="o">/</span> <span class="n">yp</span>
+<a name="ln-138"></a>    <span class="k">if</span> <span class="p">(</span><span class="n">grad</span><span class="p">%</span><span class="n">dV_free</span><span class="p">)</span> <span class="n">dx</span><span class="p">%</span><span class="n">dV_free</span> <span class="o">=</span> <span class="o">-</span><span class="n">xp</span> <span class="o">*</span> <span class="n">q</span> <span class="o">/</span> <span class="n">y</span>
+<a name="ln-139"></a><span class="k">end function</span>
+<a name="ln-140"></a>
+<a name="ln-141"></a><span class="k">end module</span>
 </pre></div>
 
     </section>
