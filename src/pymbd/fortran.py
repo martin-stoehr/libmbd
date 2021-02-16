@@ -357,7 +357,28 @@ class MBDGeom(object):
         )
         self._check_exc()
         return res
-
+        
+    
+    @_auto_context
+    def masked_dipole_energy(self, a0, w, w_t, version, r_vdw, beta, a, C, mask):  # noqa: D102= len(self)
+        res = _lib.cmbd_masked_dipole_energy(
+            self._geom_f,
+            n_atoms,
+            _cast('double*', a0),
+            _cast('double*', w),
+            _cast('double*', w_t),
+            version.encode(),
+            _cast('double*', r_vdw),
+            beta,
+            a,
+            _cast('double*', C),
+            _cast('int*', mask),
+        )
+        self._check_exc()
+        
+        return res
+        
+    
     @_auto_context
     def coulomb_energy(self, q, m, w_t, version, r_vdw, beta, a, C):  # noqa: D102
         n_atoms = len(self)

@@ -15,7 +15,7 @@ implicit none
 
 private
 
-public :: coulomb_energy, dipole_energy
+public :: coulomb_energy, dipole_energy, masked_dipole_energy
 
 contains
 
@@ -116,7 +116,7 @@ real(dp) function coulomb_energy(geom, q, m, w_t, C, damp)
     type(damping_t), intent(in) :: damp
 
     real(dp), allocatable :: O(:, :)
-    real(dp) :: OAB(6, 6), OABm(6, 6), RA(3), RB(3), ene_ABi(4), prod_w_t, &
+    real(dp) :: OAB(6, 6), OABm(6, 6), RA(3), RB(3), ene_ABi(4), &
         K(3, 3), s_vdw, f_damp
     integer, allocatable :: notAB(:)
     integer :: N, A, B, i, j, AB(6), i2A(6)
@@ -124,7 +124,6 @@ real(dp) function coulomb_energy(geom, q, m, w_t, C, damp)
     allocate (notAB(size(C, 1) - 6))
     O = matmul(matmul(C, diag(w_t)), transpose(C))
     N = geom%siz()
-    prod_w_t = product(w_t)
     coulomb_energy = 0.d0
     do A = 1, N
         do B = A + 1, N
@@ -186,9 +185,43 @@ real(dp) function dipole_energy(geom, a0, w, w_t, C, damp)
         end do
     end do
     T%val = matmul(matmul(transpose(C), T%val), C)
-    dipole_energy = sum(diag(T%val) / (4 * w_t))
+    dipole_energy = sum(diag(T%val) / w_t) / 4.d0
 end function
 
+real(dp) function masked_dipole_energy(geom, a0, w, w_t, C, damp, mask)
+    type(geom_t), intent(inout) :: geom
+    real(dp), intent(in) :: a0(:), w(:), w_t(:), C(:, :)
+    type(damping_t), intent(in) :: damp
+    integer, intent(in) :: mask(:,:)
+    
+    integer :: A, B, i, j, N
+    real(dp) :: CTC_ii
+    type(matrix_re_t) :: T
+    
+    N = geom%siz()
+    T = dipole_matrix(geom, damp)
+    do A = 1, N
+        do B = 1, N
+            i = 3*(A-1)
+            j = 3*(B-1)
+            T%val(i+1:i+3, j+1:j+3) = mask(A,B) * &
+                w(A)*w(B)*sqrt(a0(A)*a0(B))*T%val(i+1:i+3, j+1:j+3)
+        end do
+    end do
+    T%val = matmul(matmul(transpose(C), T%val), C)
+    masked_dipole_energy = 0.d0
+    do i = 1, 3*N
+        CTC_ii = 0.d0
+        do A = 1, 3*N
+            do B = 1, 3*N
+                CTC_ii = CTC_ii + C(A,i)*T%val(A,B)*C(B,i)
+            enddo
+        enddo
+        masked_dipole_energy = masked_dipole_energy + CTC_ii / w_t(i)
+    enddo
+    masked_dipole_energy = masked_dipole_energy / 4.d0
+end function
+ 
 subroutine simpson1by3(n, x, w)
     integer, intent(in) :: n
     real(dp), intent(out) :: x(n), w(n)

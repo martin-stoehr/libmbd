@@ -8,7 +8,7 @@ module mbd_c_api
 
 use iso_c_binding
 use mbd_constants
-use mbd_coulomb, only: dipole_energy, coulomb_energy
+use mbd_coulomb, only: dipole_energy, coulomb_energy, masked_dipole_energy
 use mbd_damping, only: damping_t
 use mbd_dipole, only: dipole_matrix
 use mbd_geom, only: geom_t
@@ -27,7 +27,8 @@ public :: cmbd_init_geom, cmbd_destroy_geom, cmbd_init_damping, &
     cmbd_destroy_damping, cmbd_get_exception, cmbd_update_coords, cmbd_update_lattice, &
     cmbd_get_results, cmbd_destroy_result
 public :: cmbd_ts_energy, cmbd_mbd_energy, cmbd_mbd_scs_energy, &
-    cmbd_dipole_matrix, cmbd_coulomb_energy, cmbd_dipole_energy
+    cmbd_dipole_matrix, cmbd_coulomb_energy, cmbd_dipole_energy, &
+    cmbd_masked_dipole_energy
 
 #ifdef WITH_MPI
 logical(c_bool), bind(c) :: cmbd_with_mpi = .true.
@@ -380,6 +381,31 @@ real(c_double) function cmbd_dipole_energy( &
     damp%a = a
     call c_f_pointer(geom_c, geom)
     cmbd_dipole_energy = dipole_energy(geom, a0, w, w_t, C, damp)
+end function
+
+real(c_double) function cmbd_masked_dipole_energy( &
+        geom_c, n_atoms, a0, w, w_t, version, r_vdw, beta, a, C, mask) bind(c)
+    type(c_ptr), value :: geom_c
+    integer(c_int), value, intent(in) :: n_atoms
+    real(c_double), intent(in) :: C(3*n_atoms, 3*n_atoms), &
+                                  w_t(3*n_atoms), &
+                                  w(n_atoms), a0(n_atoms), &
+                                  r_vdw(n_atoms)
+    real(c_double), value, intent(in) :: a, beta
+    character(c_char), intent(in) :: version(20)
+    integer(c_int), intent(in) :: mask(n_atoms,n_atoms)
+    
+    type(geom_t), pointer :: geom
+    type(damping_t) :: damp
+    
+    call c_f_pointer(geom_c, geom)
+    damp%version = f_string(version)
+    damp%r_vdw = r_vdw
+    damp%beta = beta
+    damp%a = a
+    
+    cmbd_masked_dipole_energy = masked_dipole_energy(geom, a0, w, w_t, &
+                                                     C, damp, mask)
 end function
 
 function f_string(str_c) result(str_f)

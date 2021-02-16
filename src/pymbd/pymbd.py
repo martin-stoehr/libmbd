@@ -18,7 +18,8 @@ ang = 1 / 0.529177249
 """(a.u.) angstrom"""
 
 
-def screening(coords, alpha_0, C6, R_vdw, beta, lattice=None, nfreq=15):
+def screening(coords, alpha_0, C6, R_vdw, beta, lattice=None, nfreq=15, \
+              damping='fermi,dip,gg'):
     r"""Screen atomic polarizabilities.
 
     :param array-like coords: (a.u.) atom coordinates in rows
@@ -39,11 +40,12 @@ def screening(coords, alpha_0, C6, R_vdw, beta, lattice=None, nfreq=15):
     for a in alpha_dyn:
         sigma = (np.sqrt(2 / np.pi) * a / 3) ** (1 / 3)
         dipmat = dipole_matrix(
-            coords, 'fermi,dip,gg', sigma=sigma, R_vdw=R_vdw, beta=beta, lattice=lattice
+            coords, damping, sigma=sigma, R_vdw=R_vdw, beta=beta, lattice=lattice
         )
         a_nlc = np.linalg.inv(np.diag(np.repeat(1 / a, 3)) + dipmat)
         a_contr = sum(np.sum(a_nlc[i::3, i::3], 1) for i in range(3)) / 3
         alpha_dyn_rsscs.append(a_contr)
+    
     alpha_dyn_rsscs = np.stack(alpha_dyn_rsscs)
     C6_rsscs = 3 / np.pi * np.sum(freq_w[:, None] * alpha_dyn_rsscs ** 2, 0)
     R_vdw_rsscs = R_vdw * (alpha_dyn_rsscs[0, :] / alpha_0) ** (1 / 3)
@@ -135,6 +137,8 @@ def dipole_matrix(
             T = (1 - damping_fermi(dists, S_vdw, a)[:, :, None, None]) * T_erf_coulomb(
                 Rs, sigma_ij
             )
+        elif damping == 'dip,gg':
+            T = T_erf_coulomb(Rs, sigma_ij)
         else:
             raise ValueError(f'Unsupported damping: {damping}')
         if do_ewald:

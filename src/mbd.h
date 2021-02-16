@@ -116,3 +116,18 @@ double cmbd_dipole_energy(
     double a,
     double* C
 );
+
+double cmbd_masked_dipole_energy(
+    struct geom_t* geom,
+    int n_atoms,
+    double* a0,
+    double* w,
+    double* w_t,
+    char* version,
+    double* r_vdw,
+    double beta,
+    double a,
+    double* C,
+    int* mask
+);
+
