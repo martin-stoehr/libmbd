@@ -4,6 +4,10 @@
 /.tox
 /.pytest_cache/
 /build
+/_build/
 /dist/
 /docs/build/
 /poetry.lock
+/lib/
+/lib64/
+/include/
