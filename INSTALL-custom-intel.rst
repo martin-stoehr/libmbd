@@ -40,7 +40,7 @@ or::
 
 - *if* the top-level directory only contains the directory lib64 and not lib::
 
-  ln -s $(pwd)"/lib64/ "$(pwd)"/lib"
+  ln -s $(pwd)/lib64/ $(pwd)/lib
 
 
 

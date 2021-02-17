@@ -8,6 +8,7 @@
 /dist/
 /docs/build/
 /poetry.lock
+lib
 /lib/
 /lib64/
 /include/
